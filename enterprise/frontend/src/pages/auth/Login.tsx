@@ -36,43 +36,47 @@ const Login: React.FC = () => {
 
   const features = [
     {
-      icon: <Shield className="w-6 h-6 text-blue-600" />,
+      icon: <Shield className="w-6 h-6 text-maternar-blue-600" />,
       title: 'Segurança Enterprise',
-      description: 'Autenticação multi-fator e criptografia de ponta'
+      description: 'Autenticação robusta e criptografia de ponta'
     },
     {
-      icon: <Globe className="w-6 h-6 text-green-600" />,
-      title: 'Acesso Global',
-      description: 'Disponível em 15+ idiomas e múltiplas regiões'
+      icon: <Globe className="w-6 h-6 text-maternar-green-600" />,
+      title: 'Plataforma Completa',
+      description: 'Cursos, chat, projetos e muito mais'
     },
     {
-      icon: <Users className="w-6 h-6 text-purple-600" />,
+      icon: <Users className="w-6 h-6 text-maternar-pink-600" />,
       title: 'Colaboração',
       description: 'Trabalhe em equipe com profissionais de saúde'
     },
     {
-      icon: <Award className="w-6 h-6 text-orange-600" />,
-      title: 'Certificações',
-      description: 'Plataforma certificada para ambientes de saúde'
+      icon: <Award className="w-6 h-6 text-maternar-green-600" />,
+      title: 'Gamificação',
+      description: 'Sistema de XP, níveis e conquistas'
     }
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-maternar-blue-50 via-white to-maternar-green-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6">
-            <span className="text-2xl font-bold text-white">SMS</span>
+          <div className="mx-auto h-20 w-20 mb-6">
+            <img 
+              src="/logo.png" 
+              alt="Maternar Santa Mariense" 
+              className="w-full h-full object-contain"
+            />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-3xl font-bold text-maternar-blue-700">
             Bem-vindo de volta
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Acesse sua plataforma de saúde enterprise
+          <p className="mt-2 text-sm text-maternar-gray-600">
+            Acesse o Maternar Santa Mariense
           </p>
         </motion.div>
       </div>
@@ -99,7 +103,7 @@ const Login: React.FC = () => {
                     type="email"
                     autoComplete="email"
                     required
-                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                     placeholder="seu@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -121,7 +125,7 @@ const Login: React.FC = () => {
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
-                    className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="appearance-none block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                     placeholder="Sua senha"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -148,7 +152,7 @@ const Login: React.FC = () => {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-maternar-blue-600 focus:ring-maternar-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                     Lembrar de mim
@@ -156,7 +160,7 @@ const Login: React.FC = () => {
                 </div>
 
                 <div className="text-sm">
-                  <a href="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
+                  <a href="/forgot-password" className="font-medium text-maternar-blue-600 hover:text-maternar-blue-700">
                     Esqueceu a senha?
                   </a>
                 </div>
@@ -165,7 +169,7 @@ const Login: React.FC = () => {
               <div>
                 <Button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  className="w-full flex justify-center py-2 px-4 bg-gradient-to-r from-maternar-blue-600 to-maternar-green-600 hover:from-maternar-blue-700 hover:to-maternar-green-700"
                   loading={loading}
                 >
                   {loading ? (
@@ -213,7 +217,7 @@ const Login: React.FC = () => {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Não tem uma conta?{' '}
-                <a href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                <a href="/register" className="font-medium text-maternar-blue-600 hover:text-maternar-blue-700">
                   Cadastre-se
                 </a>
               </p>
@@ -230,11 +234,11 @@ const Login: React.FC = () => {
         className="mt-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
       >
         <div className="text-center mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Plataforma Enterprise de Saúde
+          <h3 className="text-2xl font-bold text-maternar-blue-700 mb-4">
+            Maternar Santa Mariense
           </h3>
-          <p className="text-gray-600">
-            Conecte-se à plataforma mais avançada para profissionais de saúde
+          <p className="text-maternar-gray-600">
+            Plataforma completa de gestão, educação e comunicação para saúde
           </p>
         </div>
         
