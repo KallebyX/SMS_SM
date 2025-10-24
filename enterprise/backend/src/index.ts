@@ -189,17 +189,12 @@ class SMSEnterpriseServer {
 
   async start() {
     try {
-      // Test database connection
-      try {
-        await prisma.$connect()
-        this.dbConnected = true
-        logger.info('Database connected successfully')
-      } catch (dbErr) {
-        // Allow starting in degraded mode if DB not reachable (emergency/dev)
-        logger.warn('Database connection failed — starting in degraded mode', { error: String(dbErr) })
-      }
+      // Test database connection - must succeed
+      await prisma.$connect()
+      this.dbConnected = true
+      logger.info('✅ Database connected successfully')
 
-      // Start server (even in degraded mode)
+      // Start server
       this.server.listen(config.PORT, () => {
         logger.info(`� Server running on port ${config.PORT}`)
         logger.info(`� GraphQL endpoint: http://localhost:${config.PORT}/graphql`)
