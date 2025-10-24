@@ -56,7 +56,7 @@ const Admin: React.FC = () => {
       case 'WARNING':
         return 'text-yellow-600 bg-yellow-100'
       case 'INFO':
-        return 'text-blue-600 bg-blue-100'
+        return 'text-maternar-blue-600 bg-blue-100'
       default:
         return 'text-gray-600 bg-gray-100'
     }
@@ -81,7 +81,7 @@ const Admin: React.FC = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Administração</h1>
           <p className="text-gray-600 mt-1">
-            Painel administrativo do sistema SMS-SM Enterprise
+            Painel administrativo do sistema Maternar Enterprise
           </p>
         </div>
         

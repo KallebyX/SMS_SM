@@ -165,7 +165,7 @@ const Training: React.FC = () => {
             Desenvolva suas habilidades com nossos cursos especializados
           </p>
         </div>
-        <Button className="bg-gradient-to-r from-blue-600 to-purple-600">
+        <Button className="bg-gradient-to-r from-maternar-blue-600 to-maternar-pink-600">
           <BookOpen className="w-4 h-4 mr-2" />
           Explorar Catálogo
         </Button>
@@ -178,10 +178,10 @@ const Training: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          <Card className="p-6 bg-gradient-to-r from-maternar-blue-500 to-maternar-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100">Cursos Concluídos</p>
+                <p className="text-maternar-blue-100">Cursos Concluídos</p>
                 <p className="text-2xl font-bold">{stats.coursesCompleted}</p>
               </div>
               <CheckCircle className="w-8 h-8 text-blue-200" />
@@ -210,7 +210,7 @@ const Training: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+          <Card className="p-6 bg-gradient-to-r from-maternar-pink-500 to-maternar-pink-600 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-purple-100">Certificados</p>
@@ -249,7 +249,7 @@ const Training: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Buscar cursos..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -261,7 +261,7 @@ const Training: React.FC = () => {
                     onClick={() => setActiveFilter(category.id)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                       activeFilter === category.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-maternar-blue-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -361,17 +361,17 @@ const Training: React.FC = () => {
           >
             <Card className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <BarChart3 className="w-5 h-5 mr-2 text-blue-600" />
+                <BarChart3 className="w-5 h-5 mr-2 text-maternar-blue-600" />
                 Trilha de Aprendizado
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                   <div>
-                    <p className="text-sm font-medium text-blue-900">Segurança do Paciente</p>
-                    <p className="text-xs text-blue-600">2/3 cursos</p>
+                    <p className="text-sm font-medium text-maternar-blue-900">Segurança do Paciente</p>
+                    <p className="text-xs text-maternar-blue-600">2/3 cursos</p>
                   </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-bold text-blue-600">67%</span>
+                  <div className="w-12 h-12 bg-maternar-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-bold text-maternar-blue-600">67%</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">

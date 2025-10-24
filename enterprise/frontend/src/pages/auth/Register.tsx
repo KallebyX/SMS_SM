@@ -14,21 +14,25 @@ const Register: React.FC = () => {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-maternar-blue-50 via-white to-maternar-green-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6">
-            <span className="text-2xl font-bold text-white">SMS</span>
+          <div className="mx-auto h-20 w-20 mb-6">
+            <img 
+              src="/logo.png" 
+              alt="Maternar Santa Mariense" 
+              className="w-full h-full object-contain"
+            />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-3xl font-bold text-maternar-blue-700">
             Criar nova conta
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Junte-se à nossa plataforma de saúde enterprise
+          <p className="mt-2 text-sm text-maternar-gray-600">
+            Junte-se ao Maternar Santa Mariense
           </p>
         </motion.div>
       </div>
@@ -51,7 +55,7 @@ const Register: React.FC = () => {
                   name="firstName"
                   type="text"
                   required
-                  className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                   placeholder="Seu nome"
                   value={formData.firstName}
                   onChange={(e) => setFormData({...formData, firstName: e.target.value})}
@@ -66,7 +70,7 @@ const Register: React.FC = () => {
                   name="lastName"
                   type="text"
                   required
-                  className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                   placeholder="Seu sobrenome"
                   value={formData.lastName}
                   onChange={(e) => setFormData({...formData, lastName: e.target.value})}
@@ -132,7 +136,7 @@ const Register: React.FC = () => {
                   id="role"
                   name="role"
                   required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                   value={formData.role}
                   onChange={(e) => setFormData({...formData, role: e.target.value})}
                 >
@@ -151,7 +155,7 @@ const Register: React.FC = () => {
                   id="department"
                   name="department"
                   required
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                   value={formData.department}
                   onChange={(e) => setFormData({...formData, department: e.target.value})}
                 >
@@ -169,17 +173,17 @@ const Register: React.FC = () => {
                 id="terms"
                 name="terms"
                 type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-maternar-blue-600 focus:ring-maternar-blue-500 border-gray-300 rounded"
                 checked={formData.terms}
                 onChange={(e) => setFormData({...formData, terms: e.target.checked})}
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
                 Aceito os{' '}
-                <a href="#" className="text-blue-600 hover:text-blue-500">
+                <a href="#" className="text-maternar-blue-600 hover:text-maternar-blue-700">
                   termos de uso
                 </a>{' '}
                 e{' '}
-                <a href="#" className="text-blue-600 hover:text-blue-500">
+                <a href="#" className="text-maternar-blue-600 hover:text-maternar-blue-700">
                   política de privacidade
                 </a>
               </label>
@@ -188,7 +192,7 @@ const Register: React.FC = () => {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-maternar-blue-600 to-maternar-green-600 hover:from-maternar-blue-700 hover:to-maternar-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-maternar-blue-500"
               >
                 Criar conta
               </button>
@@ -198,7 +202,7 @@ const Register: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Já tem uma conta?{' '}
-              <a href="/login" className="font-medium text-blue-600 hover:text-blue-500">
+              <a href="/login" className="font-medium text-maternar-blue-600 hover:text-maternar-blue-700">
                 Faça login
               </a>
             </p>

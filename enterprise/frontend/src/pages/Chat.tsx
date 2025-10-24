@@ -172,7 +172,7 @@ const Chat: React.FC = () => {
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-semibold text-gray-900">Conversas</h1>
-            <Button size="sm" className="bg-blue-600">
+            <Button size="sm" className="bg-maternar-blue-600">
               <Plus className="w-4 h-4" />
             </Button>
           </div>
@@ -183,7 +183,7 @@ const Chat: React.FC = () => {
             <input
               type="text"
               placeholder="Buscar conversas..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -197,7 +197,7 @@ const Chat: React.FC = () => {
               key={chat.id}
               whileHover={{ backgroundColor: '#f9fafb' }}
               className={`p-4 cursor-pointer border-b border-gray-100 ${
-                selectedChat === chat.id ? 'bg-blue-50 border-r-4 border-r-blue-600' : ''
+                selectedChat === chat.id ? 'bg-blue-50 border-r-4 border-r-maternar-blue-600' : ''
               }`}
               onClick={() => setSelectedChat(chat.id)}
             >
@@ -213,7 +213,7 @@ const Chat: React.FC = () => {
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                   )}
                   {chat.type === 'group' && (
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-maternar-blue-600 rounded-full flex items-center justify-center">
                       <Users className="w-3 h-3 text-white" />
                     </div>
                   )}
@@ -273,7 +273,7 @@ const Chat: React.FC = () => {
                       {currentChat.type === 'direct' ? (
                         <>
                           {currentChat.online ? (
-                            <span className="text-green-600">Online</span>
+                            <span className="text-maternar-green-600">Online</span>
                           ) : (
                             'Última vez: 2h atrás'
                           )}
@@ -322,7 +322,7 @@ const Chat: React.FC = () => {
                     
                     <div className={`rounded-lg p-3 ${
                       msg.senderId === 'me'
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-maternar-blue-600 text-white'
                         : 'bg-white text-gray-900 shadow-sm'
                     }`}>
                       {msg.type === 'text' ? (
@@ -361,7 +361,7 @@ const Chat: React.FC = () => {
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Digite sua mensagem..."
-                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
                     rows={1}
                   />
                 </div>
@@ -373,7 +373,7 @@ const Chat: React.FC = () => {
                 <Button 
                   onClick={handleSendMessage}
                   disabled={!message.trim()}
-                  className="bg-blue-600"
+                  className="bg-maternar-blue-600"
                 >
                   <Send className="w-5 h-5" />
                 </Button>

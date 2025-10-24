@@ -91,8 +91,8 @@ const Profile: React.FC = () => {
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'training': return <BookOpen className="w-4 h-4 text-blue-600" />
-      case 'project': return <Users className="w-4 h-4 text-green-600" />
+      case 'training': return <BookOpen className="w-4 h-4 text-maternar-blue-600" />
+      case 'project': return <Users className="w-4 h-4 text-maternar-green-600" />
       case 'achievement': return <Award className="w-4 h-4 text-yellow-600" />
       case 'collaboration': return <Users className="w-4 h-4 text-purple-600" />
       default: return <Clock className="w-4 h-4 text-gray-600" />
@@ -114,7 +114,7 @@ const Profile: React.FC = () => {
         </div>
         <Button 
           onClick={() => setIsEditing(!isEditing)}
-          className={isEditing ? 'bg-green-600' : 'bg-blue-600'}
+          className={isEditing ? 'bg-maternar-green-600' : 'bg-maternar-blue-600'}
         >
           {isEditing ? (
             <>
@@ -149,7 +149,7 @@ const Profile: React.FC = () => {
                   className="mx-auto"
                 />
                 {isEditing && (
-                  <button className="absolute bottom-0 right-0 p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+                  <button className="absolute bottom-0 right-0 p-2 bg-maternar-blue-600 text-white rounded-full hover:bg-blue-700">
                     <Camera className="w-4 h-4" />
                   </button>
                 )}
@@ -225,7 +225,7 @@ const Profile: React.FC = () => {
               <Card className="p-4">
                 <div className="text-center">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <Users className="w-4 h-4 text-blue-600" />
+                    <Users className="w-4 h-4 text-maternar-blue-600" />
                   </div>
                   <p className="text-2xl font-bold text-gray-900">{stats.projects}</p>
                   <p className="text-xs text-gray-600">Projetos</p>
@@ -235,7 +235,7 @@ const Profile: React.FC = () => {
               <Card className="p-4">
                 <div className="text-center">
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <BookOpen className="w-4 h-4 text-green-600" />
+                    <BookOpen className="w-4 h-4 text-maternar-green-600" />
                   </div>
                   <p className="text-2xl font-bold text-gray-900">{stats.completedTraining}</p>
                   <p className="text-xs text-gray-600">Treinamentos</p>
@@ -283,7 +283,7 @@ const Profile: React.FC = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`pb-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                       activeTab === tab.id
-                        ? 'border-blue-600 text-blue-600'
+                        ? 'border-maternar-blue-600 text-maternar-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700'
                     }`}
                   >

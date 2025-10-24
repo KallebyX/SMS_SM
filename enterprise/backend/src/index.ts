@@ -80,7 +80,7 @@ class SMSEnterpriseServer {
     // Root endpoint
     this.app.get('/', (req, res) => {
       res.json({
-        name: 'SMS-SM Enterprise Backend',
+        name: 'Maternar Santa Mariense Backend',
         version: '2.0.0',
         status: 'running',
         endpoints: {
@@ -106,7 +106,7 @@ class SMSEnterpriseServer {
     // API Info
     this.app.get('/api', (req, res) => {
       res.json({
-        name: 'SMS-SM Enterprise Backend',
+        name: 'Maternar Santa Mariense Backend',
         version: '2.0.0',
         graphql: '/graphql',
         playground: config.NODE_ENV === 'development' ? '/graphql' : null

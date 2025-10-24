@@ -204,7 +204,7 @@ const Links: React.FC = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filtros
           </Button>
-          <Button className="bg-blue-600">
+          <Button className="bg-maternar-blue-600">
             <Plus className="w-4 h-4 mr-2" />
             Adicionar Link
           </Button>
@@ -225,7 +225,7 @@ const Links: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <LinkIcon className="w-6 h-6 text-blue-600" />
+                <LinkIcon className="w-6 h-6 text-maternar-blue-600" />
               </div>
             </div>
           </Card>
@@ -310,7 +310,7 @@ const Links: React.FC = () => {
                     onClick={() => setActiveCategory(category.id)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                       activeCategory === category.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-maternar-blue-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -355,7 +355,7 @@ const Links: React.FC = () => {
                   </div>
                   
                   <h3 
-                    className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors"
+                    className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-maternar-blue-600 transition-colors"
                     onClick={() => handleLinkClick(link)}
                   >
                     {link.title}
@@ -447,7 +447,7 @@ const Links: React.FC = () => {
           >
             <Card className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Clock className="w-5 h-5 mr-2 text-blue-600" />
+                <Clock className="w-5 h-5 mr-2 text-maternar-blue-600" />
                 Acessados Recentemente
               </h3>
               <div className="space-y-3">

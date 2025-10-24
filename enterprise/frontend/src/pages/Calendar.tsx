@@ -50,7 +50,7 @@ const Calendar: React.FC = () => {
       location: 'Auditório Principal',
       attendees: ['Equipe Completa'],
       priority: 'medium',
-      color: 'bg-blue-500'
+      color: 'bg-maternar-blue-500'
     },
     {
       id: 3,
@@ -142,7 +142,7 @@ const Calendar: React.FC = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filtros
           </Button>
-          <Button className="bg-blue-600">
+          <Button className="bg-maternar-blue-600">
             <Plus className="w-4 h-4 mr-2" />
             Novo Evento
           </Button>
@@ -163,7 +163,7 @@ const Calendar: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">{todayEvents.length}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <CalendarIcon className="w-6 h-6 text-blue-600" />
+                <CalendarIcon className="w-6 h-6 text-maternar-blue-600" />
               </div>
             </div>
           </Card>
@@ -199,7 +199,7 @@ const Calendar: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">8</p>
               </div>
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <Users className="w-6 h-6 text-purple-600" />
+                <Users className="w-6 h-6 text-maternar-pink-600" />
               </div>
             </div>
           </Card>
@@ -281,13 +281,13 @@ const Calendar: React.FC = () => {
                     }`}
                   >
                     <div className={`text-sm ${
-                      isToday ? 'font-bold text-blue-600' : 'text-gray-900'
+                      isToday ? 'font-bold text-maternar-blue-600' : 'text-gray-900'
                     }`}>
                       {date.getDate()}
                     </div>
                     {hasEvent && (
                       <div className="mt-1">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <div className="w-2 h-2 bg-maternar-blue-500 rounded-full"></div>
                       </div>
                     )}
                   </div>

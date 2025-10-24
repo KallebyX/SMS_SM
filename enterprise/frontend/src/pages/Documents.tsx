@@ -182,7 +182,7 @@ const Documents: React.FC = () => {
       case 'policy':
         return <AlertTriangle className="w-5 h-5 text-red-500" />
       case 'manual':
-        return <FileText className="w-5 h-5 text-blue-500" />
+        return <FileText className="w-5 h-5 text-maternar-blue-500" />
       case 'guideline':
         return <CheckCircle className="w-5 h-5 text-green-500" />
       case 'form':
@@ -210,7 +210,7 @@ const Documents: React.FC = () => {
   }
 
   const statsCards = [
-    { title: 'Total de Documentos', value: documents.length.toString(), icon: FileText, color: 'bg-blue-500' },
+    { title: 'Total de Documentos', value: documents.length.toString(), icon: FileText, color: 'bg-maternar-blue-500' },
     { title: 'Aprovados', value: documents.filter(d => d.status === 'approved').length.toString(), icon: CheckCircle, color: 'bg-green-500' },
     { title: 'Em Revisão', value: documents.filter(d => d.status === 'review').length.toString(), icon: Clock, color: 'bg-yellow-500' },
     { title: 'Expirando Soon', value: documents.filter(d => isExpiringSoon(d.expiryDate)).length.toString(), icon: AlertTriangle, color: 'bg-red-500' }
@@ -277,7 +277,7 @@ const Documents: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Buscar documentos..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -286,7 +286,7 @@ const Documents: React.FC = () => {
             
             <div className="flex space-x-3">
               <select
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
@@ -297,7 +297,7 @@ const Documents: React.FC = () => {
               </select>
               
               <select
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
               >
@@ -308,7 +308,7 @@ const Documents: React.FC = () => {
               </select>
               
               <select
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
               >

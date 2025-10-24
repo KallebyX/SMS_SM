@@ -71,7 +71,7 @@ const Analytics: React.FC = () => {
       change: '+8%',
       trend: 'up',
       icon: Target,
-      color: 'bg-green-500'
+      color: 'bg-maternar-green-500'
     },
     {
       title: 'Taxa de Conclusão',
@@ -160,8 +160,8 @@ const Analytics: React.FC = () => {
                 <p className="text-sm font-medium text-gray-600">{kpi.title}</p>
                 <p className="text-3xl font-bold text-gray-900 mt-2">{kpi.value}</p>
                 <div className="flex items-center mt-2">
-                  <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-                  <span className="text-sm text-green-600 font-medium">{kpi.change}</span>
+                  <TrendingUp className="w-4 h-4 text-maternar-green-500 mr-1" />
+                  <span className="text-sm text-maternar-green-600 font-medium">{kpi.change}</span>
                   <span className="text-sm text-gray-500 ml-1">vs. período anterior</span>
                 </div>
               </div>
@@ -276,7 +276,7 @@ const Analytics: React.FC = () => {
               {topUsers.map((user, index) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-medium">
+                    <div className="w-10 h-10 bg-maternar-blue-600 rounded-full flex items-center justify-center text-white font-medium">
                       {user.avatar}
                     </div>
                     <div>
@@ -314,7 +314,7 @@ const Analytics: React.FC = () => {
               {recentEvents.map((event, index) => (
                 <div key={index} className="flex items-start space-x-3">
                   <div className={`w-2 h-2 rounded-full mt-2 ${
-                    event.type === 'success' ? 'bg-green-500' :
+                    event.type === 'success' ? 'bg-maternar-green-500' :
                     event.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
                   }`} />
                   <div className="flex-1 min-w-0">

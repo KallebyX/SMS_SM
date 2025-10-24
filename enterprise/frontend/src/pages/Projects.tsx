@@ -146,7 +146,7 @@ const Projects: React.FC = () => {
     switch (priority) {
       case 'high': return 'text-red-600'
       case 'medium': return 'text-yellow-600'
-      case 'low': return 'text-green-600'
+      case 'low': return 'text-maternar-green-600'
       default: return 'text-gray-600'
     }
   }
@@ -183,7 +183,7 @@ const Projects: React.FC = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filtros
           </Button>
-          <Button className="bg-blue-600">
+          <Button className="bg-maternar-blue-600">
             <Plus className="w-4 h-4 mr-2" />
             Novo Projeto
           </Button>
@@ -204,7 +204,7 @@ const Projects: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <FolderKanban className="w-6 h-6 text-blue-600" />
+                <FolderKanban className="w-6 h-6 text-maternar-blue-600" />
               </div>
             </div>
           </Card>
@@ -240,7 +240,7 @@ const Projects: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+                <CheckCircle className="w-6 h-6 text-maternar-green-600" />
               </div>
             </div>
           </Card>
@@ -273,7 +273,7 @@ const Projects: React.FC = () => {
             <input
               type="text"
               placeholder="Buscar projetos..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -293,7 +293,7 @@ const Projects: React.FC = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     activeTab === tab.id
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-maternar-blue-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >

@@ -121,7 +121,7 @@ const Gamification: React.FC = () => {
     switch (rarity) {
       case 'common': return 'text-gray-600 bg-gray-100'
       case 'rare': return 'text-blue-600 bg-blue-100'
-      case 'epic': return 'text-purple-600 bg-purple-100'
+      case 'epic': return 'text-maternar-pink-600 bg-purple-100'
       case 'legendary': return 'text-yellow-600 bg-yellow-100'
       default: return 'text-gray-600 bg-gray-100'
     }
@@ -144,8 +144,8 @@ const Gamification: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Gamificação</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-maternar-blue-700">Gamificação</h1>
+          <p className="text-maternar-gray-600 mt-1">
             Acompanhe seu progresso e conquiste recompensas
           </p>
         </div>
@@ -154,10 +154,10 @@ const Gamification: React.FC = () => {
           whileHover={{ scale: 1.05 }}
         >
           <div className="text-right">
-            <p className="text-sm text-gray-600">Nível {userStats.level}</p>
-            <p className="text-2xl font-bold text-purple-600">{userStats.totalPoints.toLocaleString()} pts</p>
+            <p className="text-sm text-maternar-gray-600">Nível {userStats.level}</p>
+            <p className="text-2xl font-bold text-maternar-pink-600">{userStats.totalPoints.toLocaleString()} pts</p>
           </div>
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-maternar-pink-500 to-maternar-pink-600 rounded-full flex items-center justify-center">
             <Crown className="w-8 h-8 text-white" />
           </div>
         </motion.div>
@@ -170,17 +170,17 @@ const Gamification: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          <Card className="p-6 bg-gradient-to-r from-maternar-blue-500 to-maternar-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100">Experiência</p>
+                <p className="text-maternar-blue-100">Experiência</p>
                 <p className="text-2xl font-bold">{userStats.xp} XP</p>
                 <Progress 
                   value={(userStats.xp / userStats.nextLevelXp) * 100} 
-                  className="mt-2 bg-blue-400"
+                  className="mt-2 bg-maternar-blue-400"
                 />
               </div>
-              <Star className="w-8 h-8 text-blue-200" />
+              <Star className="w-8 h-8 text-maternar-blue-200" />
             </div>
           </Card>
         </motion.div>
@@ -190,13 +190,13 @@ const Gamification: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="p-6 bg-gradient-to-r from-green-500 to-green-600 text-white">
+          <Card className="p-6 bg-gradient-to-r from-maternar-green-500 to-maternar-green-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100">Sequência</p>
+                <p className="text-maternar-green-100">Sequência</p>
                 <p className="text-2xl font-bold">{userStats.streak} dias</p>
               </div>
-              <Zap className="w-8 h-8 text-green-200" />
+              <Zap className="w-8 h-8 text-maternar-green-200" />
             </div>
           </Card>
         </motion.div>
@@ -206,13 +206,13 @@ const Gamification: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+          <Card className="p-6 bg-gradient-to-r from-maternar-pink-500 to-maternar-pink-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100">Ranking</p>
+                <p className="text-maternar-pink-100">Ranking</p>
                 <p className="text-2xl font-bold">#{userStats.rank}</p>
               </div>
-              <Medal className="w-8 h-8 text-purple-200" />
+              <Medal className="w-8 h-8 text-maternar-pink-200" />
             </div>
           </Card>
         </motion.div>
@@ -222,13 +222,13 @@ const Gamification: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="p-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+          <Card className="p-6 bg-gradient-to-r from-maternar-green-500 to-maternar-green-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-100">Conquistas</p>
+                <p className="text-maternar-green-100">Conquistas</p>
                 <p className="text-2xl font-bold">{userStats.badges}</p>
               </div>
-              <Award className="w-8 h-8 text-orange-200" />
+              <Award className="w-8 h-8 text-maternar-green-200" />
             </div>
           </Card>
         </motion.div>
@@ -325,7 +325,7 @@ const Gamification: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   className={`flex items-center space-x-3 p-3 rounded-lg ${
                     user.isCurrentUser 
-                      ? 'bg-blue-50 border-2 border-blue-200' 
+                      ? 'bg-maternar-blue-50 border-2 border-maternar-blue-200' 
                       : 'hover:bg-gray-50'
                   }`}
                 >
@@ -340,7 +340,7 @@ const Gamification: React.FC = () => {
                   <Avatar src={user.avatar} alt={user.name} size="sm" />
                   <div className="flex-1 min-w-0">
                     <p className={`text-sm font-medium truncate ${
-                      user.isCurrentUser ? 'text-blue-900' : 'text-gray-900'
+                      user.isCurrentUser ? 'text-maternar-blue-900' : 'text-gray-900'
                     }`}>
                       {user.name}
                     </p>
@@ -383,7 +383,7 @@ const Gamification: React.FC = () => {
               <motion.div
                 key={challenge.id}
                 whileHover={{ scale: 1.02 }}
-                className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                className="p-4 border-2 border-gray-200 rounded-lg hover:border-maternar-blue-300 transition-colors"
               >
                 <div className="flex items-start justify-between mb-3">
                   <Badge className={getDifficultyColor(challenge.difficulty)}>

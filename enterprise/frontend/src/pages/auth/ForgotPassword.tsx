@@ -23,7 +23,7 @@ const ForgotPassword: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-maternar-blue-50 to-maternar-green-100 flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -57,7 +57,7 @@ const ForgotPassword: React.FC = () => {
               
               <button
                 onClick={() => setIsSubmitted(false)}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-sm text-maternar-blue-600 hover:text-maternar-blue-700"
               >
                 Não recebeu o email? Tentar novamente
               </button>
@@ -69,7 +69,7 @@ const ForgotPassword: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-maternar-blue-50 to-maternar-green-100 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -98,8 +98,8 @@ const ForgotPassword: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="seu.email@sms-sm.health"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-maternar-blue-500 focus:border-maternar-blue-500"
+                  placeholder="seu.email@maternarsm.com.br"
                 />
               </div>
             </div>
@@ -116,7 +116,7 @@ const ForgotPassword: React.FC = () => {
           <div className="mt-6 text-center">
             <Link 
               to="/auth/login"
-              className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800"
+              className="inline-flex items-center text-sm text-maternar-blue-600 hover:text-maternar-blue-700"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar para Login

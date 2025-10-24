@@ -182,7 +182,7 @@ const Policies: React.FC = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filtros Avançados
           </Button>
-          <Button className="bg-blue-600">
+          <Button className="bg-maternar-blue-600">
             <Plus className="w-4 h-4 mr-2" />
             Nova Política
           </Button>
@@ -203,7 +203,7 @@ const Policies: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <FileText className="w-6 h-6 text-blue-600" />
+                <FileText className="w-6 h-6 text-maternar-blue-600" />
               </div>
             </div>
           </Card>
@@ -257,7 +257,7 @@ const Policies: React.FC = () => {
                 <p className="text-2xl font-bold text-gray-900">{stats.draft}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <Edit className="w-6 h-6 text-blue-600" />
+                <Edit className="w-6 h-6 text-maternar-blue-600" />
               </div>
             </div>
           </Card>
@@ -272,7 +272,7 @@ const Policies: React.FC = () => {
             <input
               type="text"
               placeholder="Buscar políticas, procedimentos ou tags..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -285,7 +285,7 @@ const Policies: React.FC = () => {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                   activeCategory === category.id
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-maternar-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
