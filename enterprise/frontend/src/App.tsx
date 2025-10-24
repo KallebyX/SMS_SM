@@ -73,13 +73,13 @@ function LoginForm({ onLogin }: { onLogin: (user: User, token: string) => void }
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-      <h2>Login - SMS-SM Enterprise</h2>
+      <h2>Login - Maternar Santa Mariense</h2>
       
       <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#f0f8ff', border: '1px solid #0066cc', borderRadius: '4px' }}>
         <h4>Usuários de Teste:</h4>
-        <p><strong>Admin:</strong> admin@sms-sm.com / admin123</p>
-        <p><strong>Manager:</strong> maria@sms-sm.com / user123</p>
-        <p><strong>User:</strong> joao@sms-sm.com / user123</p>
+        <p><strong>Admin:</strong> admin@maternarsm.com.br / admin123</p>
+        <p><strong>Manager:</strong> maria@maternarsm.com.br / user123</p>
+        <p><strong>User:</strong> joao@maternarsm.com.br / user123</p>
       </div>
 
       {error && (
@@ -140,27 +140,15 @@ function Dashboard({ user, onLogout }: { user: User, onLogout: () => void }) {
     <div style={{ fontFamily: 'Arial, sans-serif' }}>
       {/* Header */}
       <div style={{ 
-        backgroundColor: '#0066cc', 
+        backgroundColor: '#1E4A7A', 
         color: 'white', 
         padding: '15px 20px', 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center' 
       }}>
-        <h1 style={{ margin: 0 }}>SMS-SM Enterprise</h1>
+        <h1 style={{ margin: 0 }}>Maternar Santa Mariense</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          {(window.location.search.includes('emergency=1') || (import.meta.env && import.meta.env.VITE_EMERGENCY_MODE === 'true')) && (
-            <div style={{ 
-              backgroundColor: '#ff4444', 
-              color: 'white', 
-              padding: '5px 10px', 
-              borderRadius: '4px', 
-              fontSize: '12px',
-              fontWeight: 'bold'
-            }}>
-              🚨 MODO EMERGÊNCIA
-            </div>
-          )}
           <span>Olá, {user.firstName}!</span>
           <span>XP: {user.totalXP} | Nível: {user.level}</span>
           <button 
@@ -366,33 +354,10 @@ export default function App() {
 
   // Check for existing authentication on app load
   React.useEffect(() => {
-    // Emergency auto-login: URL param ?emergency=1 or Vite env var VITE_EMERGENCY_MODE=true
-    const urlParams = new URLSearchParams(window.location.search)
-    const emergencyParam = urlParams.get('emergency')
-    const viteEmergency = (import.meta.env && import.meta.env.VITE_EMERGENCY_MODE) === 'true'
-
-    if (emergencyParam === '1' || viteEmergency) {
-      // Create a local emergency user and token
-      const emergencyUser: User = {
-        id: 'emergency-admin',
-        email: 'emergency@local',
-        username: 'emergency',
-        firstName: 'Emergency',
-        lastName: 'Admin',
-        role: 'ADMIN',
-        totalXP: 99999,
-        level: 99
-      }
-      localStorage.setItem('authToken', 'emergency-bypass-token')
-      setUser(emergencyUser)
-      setLoading(false)
-      return
-    }
-
     const token = localStorage.getItem('authToken')
     if (token) {
-      // For demo purposes, we'll skip token validation and just show the dashboard
-      // In a real app, you'd validate the token with the backend
+      // Validate token and load user data
+      // In production, validate the token with the backend
       setLoading(false)
     } else {
       setLoading(false)

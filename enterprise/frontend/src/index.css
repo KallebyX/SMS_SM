@@ -4,25 +4,32 @@
 
 @layer base {
   :root {
+    /* Maternar Santa Mariense Brand Colors */
+    --maternar-blue: #1E4A7A;
+    --maternar-green: #7AB844;
+    --maternar-pink: #D42E5B;
+    --maternar-gray: #9B9B9B;
+    
+    /* Theme colors using Maternar palette */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 208 61% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 208 61% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --popover-foreground: 208 61% 15%;
+    --primary: 208 61% 30%;  /* Maternar Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 93 43% 49%;  /* Maternar Green */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 342 65% 51%;  /* Maternar Pink */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 342 65% 51%;  /* Maternar Pink for destructive actions */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 87%;
+    --input: 0 0% 87%;
+    --ring: 208 61% 30%;
     --radius: 0.5rem;
   }
 

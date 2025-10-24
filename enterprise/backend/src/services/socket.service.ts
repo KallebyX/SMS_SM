@@ -31,18 +31,11 @@ export class SocketService {
           throw new Error('Token não fornecido')
         }
         
-        // Skip validation for mock token in development
-        if (token === 'mock-jwt-token' && config.NODE_ENV === 'development') {
-          socket.userId = 'mock-user-id'
-          socket.userEmail = 'mock@example.com'
-          socket.userRole = 'USER'
-        } else {
-          // Verify real token
-          const payload = authService.verifyToken(token)
-          socket.userId = payload.userId
-          socket.userEmail = payload.email
-          socket.userRole = payload.role
-        }
+        // Verify token
+        const payload = authService.verifyToken(token)
+        socket.userId = payload.userId
+        socket.userEmail = payload.email
+        socket.userRole = payload.role
         
         next()
         

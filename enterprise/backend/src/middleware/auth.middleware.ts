@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { authService } from '../services/auth.service.js'
 import { logger } from '../utils/logger.js'
-import { config } from '../config/index.js'
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -17,18 +16,6 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    // Emergency bypass: allow request when emergency header/query or config enabled
-    const emergencyHeader = req.headers['x-emergency'] || req.query?.emergency
-    if (config.EMERGENCY_MODE || String(emergencyHeader) === '1') {
-      logger.warn('Emergency auth bypass enabled for request', { path: req.path })
-      req.user = {
-        userId: 'emergency-admin',
-        email: 'emergency@local',
-        role: 'ADMIN'
-      }
-      return next()
-    }
-
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
@@ -47,17 +34,7 @@ export const authMiddleware = async (
       })
     }
 
-    // Skip validation for mock token in development
-    if (token === 'mock-jwt-token' && process.env.NODE_ENV === 'development') {
-      req.user = {
-        userId: 'mock-user-id',
-        email: 'mock@example.com',
-        role: 'USER'
-      }
-      return next()
-    }
-
-    // Verify real token
+    // Verify token
     const payload = authService.verifyToken(token)
 
     // Attach user info to request
@@ -100,17 +77,6 @@ export const optionalAuth = async (
   next: NextFunction
 ) => {
   try {
-    // Emergency bypass for optional auth as well
-    const emergencyHeader = req.headers['x-emergency'] || req.query?.emergency
-    if (config.EMERGENCY_MODE || String(emergencyHeader) === '1') {
-      req.user = {
-        userId: 'emergency-admin',
-        email: 'emergency@local',
-        role: 'ADMIN'
-      }
-      return next()
-    }
-
     const authHeader = req.headers.authorization
 
     if (authHeader) {
@@ -119,18 +85,9 @@ export const optionalAuth = async (
         : authHeader
 
       if (token) {
-        // Skip validation for mock token in development
-        if (token === 'mock-jwt-token' && process.env.NODE_ENV === 'development') {
-          req.user = {
-            userId: 'mock-user-id',
-            email: 'mock@example.com',
-            role: 'USER'
-          }
-        } else {
-          // Verify real token
-          const payload = authService.verifyToken(token)
-          req.user = payload
-        }
+        // Verify token
+        const payload = authService.verifyToken(token)
+        req.user = payload
       }
     }
     

@@ -21,7 +21,7 @@
     "migration:generate": "drizzle-kit generate:pg",
     "migration:run": "tsx src/database/migrate.ts",
     "migration:drop": "drizzle-kit drop",
-    "db:seed": "tsx src/database/seed.ts",
+    "db:seed": "tsx scripts/seed.ts",
     "db:studio": "drizzle-kit studio",
     "docker:build": "docker build -t sms-sm-backend .",
     "docker:run": "docker run -p 4000:4000 sms-sm-backend",

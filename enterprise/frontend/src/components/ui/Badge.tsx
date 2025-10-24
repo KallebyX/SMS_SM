@@ -14,12 +14,12 @@ export const Badge: React.FC<BadgeProps> = ({
   size = 'default'
 }) => {
 const variants = {
-  default: 'bg-gray-100 text-gray-800',
-  secondary: 'bg-blue-100 text-blue-800',
-  success: 'bg-green-100 text-green-800',
-  danger: 'bg-red-100 text-red-800',
+  default: 'bg-maternar-gray-100 text-maternar-gray-800',
+  secondary: 'bg-maternar-blue-100 text-maternar-blue-800',
+  success: 'bg-maternar-green-100 text-maternar-green-800',
+  danger: 'bg-maternar-pink-100 text-maternar-pink-800',
   warning: 'bg-yellow-100 text-yellow-800',
-  destructive: 'bg-red-600 text-white'
+  destructive: 'bg-maternar-pink-600 text-white'
 }
 
 const sizes = {

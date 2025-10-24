@@ -1,22 +1,35 @@
-# SMS-SM Enterprise System
+# Maternar Santa Mariense
 
-Sistema completo de gestão para Secretaria Municipal de Saúde com funcionalidades de gamificação, cursos, chat, calendário, projetos, políticas e links úteis.
+Sistema completo de gestão, educação e comunicação para saúde com funcionalidades de gamificação, cursos, chat em tempo real, calendário, projetos Kanban, políticas e links úteis.
 
 ## 🚀 Início Rápido
 
-### Modo de Emergência (Demonstração)
+### Pré-requisitos
 
-Para iniciar o sistema sem banco de dados e com bypass de autenticação:
+- Node.js 18+ 
+- PostgreSQL 14+
+- Redis 7+
+- Docker e Docker Compose (opcional)
+
+### Instalação
 
 ```bash
-# Iniciar todo o sistema
-bash /workspaces/SMS_SM/start-emergency.sh start
+# 1. Clone o repositório
+git clone https://github.com/your-org/maternar-sm
+cd maternar-sm
 
-# Verificar status
-bash /workspaces/SMS_SM/start-emergency.sh status
+# 2. Configure o backend
+cd enterprise/backend
+bash setup-env.sh  # Cria o arquivo .env
+bash init-database.sh  # Inicializa o banco de dados
 
-# Parar sistema
-bash /workspaces/SMS_SM/start-emergency.sh stop
+# 3. Instale as dependências do frontend
+cd ../frontend
+npm install
+
+# 4. Inicie o sistema com Docker Compose (recomendado)
+cd ../..
+bash sms-control.sh start
 ```
 
 ### URLs de Acesso
@@ -24,6 +37,13 @@ bash /workspaces/SMS_SM/start-emergency.sh stop
 - **🌐 Sistema Principal**: http://localhost:3000
 - **🔧 Backend API**: http://localhost:4000
 - **❤️ Health Check**: http://localhost:4000/health
+- **📊 GraphQL Playground**: http://localhost:4000/graphql
+
+### Usuários de Teste
+
+- **Admin**: admin@maternarsm.com.br / admin123
+- **Manager**: maria@maternarsm.com.br / user123
+- **User**: joao@maternarsm.com.br / user123
 
 ## 🏗️ Arquitetura
 
@@ -91,33 +111,37 @@ bash /workspaces/SMS_SM/start-emergency.sh stop
 ## 🔧 Comandos de Controle
 
 ```bash
-# Gerenciamento completo do sistema
-bash /workspaces/SMS_SM/start-emergency.sh [comando]
+# Gerenciamento completo do sistema com Docker Compose
+bash sms-control.sh [comando]
 
 # Comandos disponíveis:
-start    # Iniciar todos os serviços
-stop     # Parar todos os serviços  
-restart  # Reiniciar todos os serviços
-status   # Verificar status dos serviços
-logs     # Mostrar logs dos serviços
-help     # Mostrar ajuda
+start      # Iniciar todos os serviços
+stop       # Parar todos os serviços  
+restart    # Reiniciar todos os serviços
+status     # Verificar status dos serviços
+logs       # Mostrar logs (use logs <service> para serviço específico)
+build      # Construir todas as imagens Docker
+clean      # Remover containers, volumes e imagens
+reset-db   # Resetar banco de dados
+help       # Mostrar ajuda
 ```
 
-## 🚨 Modo de Emergência
+## 🔐 Segurança
 
-O sistema pode funcionar em "Modo de Emergência" para demonstrações:
+O sistema implementa as melhores práticas de segurança:
 
-### Ativação Automática
-- **URL Parameter**: `?emergency=1`
-- **Environment**: `VITE_EMERGENCY_MODE=true`
-- **Config Backend**: `EMERGENCY_MODE=true`
+### Autenticação e Autorização
+- ✅ **JWT** com tokens de acesso e refresh
+- ✅ **Bcrypt** para hash de senhas (salt de 12 rounds)
+- ✅ **RBAC** (Role-Based Access Control)
+- ✅ **Rate Limiting** configurável por rota
 
-### Características
-- ✅ **Bypass de autenticação** (login automático)
-- ✅ **Funciona sem banco de dados**
-- ✅ **Perfeito para demos**
-- ✅ **Todos os módulos acessíveis**
-- ✅ **Indicador visual de emergência**
+### Proteções Implementadas
+- ✅ **Helmet** para headers HTTP seguros
+- ✅ **CORS** restrito a origens permitidas
+- ✅ **Sanitização de inputs** contra XSS
+- ✅ **Proteção contra SQL Injection** (Prisma ORM)
+- ✅ **Validação de dados** com Zod
 
 ## 🐳 Docker (Opcional)
 

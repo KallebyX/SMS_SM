@@ -11,10 +11,10 @@ async function seed() {
     // Create admin user
     const adminPassword = await bcrypt.hash('admin123', 12)
     const admin = await prisma.user.upsert({
-      where: { email: 'admin@sms-sm.com' },
+      where: { email: 'admin@maternarsm.com.br' },
       update: {},
       create: {
-        email: 'admin@sms-sm.com',
+        email: 'admin@maternarsm.com.br',
         username: 'admin',
         password: adminPassword,
         firstName: 'Admin',
@@ -30,10 +30,10 @@ async function seed() {
     // Create sample users
     const userPassword = await bcrypt.hash('user123', 12)
     const user1 = await prisma.user.upsert({
-      where: { email: 'joao@sms-sm.com' },
+      where: { email: 'joao@maternarsm.com.br' },
       update: {},
       create: {
-        email: 'joao@sms-sm.com',
+        email: 'joao@maternarsm.com.br',
         username: 'joao.silva',
         password: userPassword,
         firstName: 'João',
@@ -47,10 +47,10 @@ async function seed() {
     })
 
     const user2 = await prisma.user.upsert({
-      where: { email: 'maria@sms-sm.com' },
+      where: { email: 'maria@maternarsm.com.br' },
       update: {},
       create: {
-        email: 'maria@sms-sm.com',
+        email: 'maria@maternarsm.com.br',
         username: 'maria.santos',
         password: userPassword,
         firstName: 'Maria',
@@ -340,15 +340,15 @@ async function seed() {
       data: [
         {
           id: 'link-1',
-          title: 'Portal SMS-SM',
-          url: 'https://sms.saomateus.es.gov.br',
-          description: 'Portal oficial da Secretaria Municipal de Saúde',
+          title: 'Portal Maternar',
+          url: 'https://maternarsm.com.br',
+          description: 'Portal oficial do Maternar Santa Mariense',
           category: 'SYSTEM'
         },
         {
           id: 'link-2',
           title: 'Sistema de Prontuário Eletrônico',
-          url: 'https://prontuario.sms-sm.com',
+          url: 'https://prontuario.maternarsm.com.br',
           description: 'Acesso ao sistema de prontuário eletrônico',
           category: 'SYSTEM'
         },
@@ -362,7 +362,7 @@ async function seed() {
         {
           id: 'link-4',
           title: 'Suporte Técnico',
-          url: 'https://suporte.sms-sm.com',
+          url: 'https://suporte.maternarsm.com.br',
           description: 'Portal de suporte técnico para sistemas',
           category: 'SUPPORT'
         }

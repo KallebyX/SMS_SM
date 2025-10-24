@@ -20,8 +20,6 @@ const configSchema = z.object({
   
   // CORS
   CORS_ORIGINS: z.string().transform(str => str.split(',')).default('http://localhost:3000,http://localhost:5173'),
-  // Emergency mode: when true, auth middleware will allow emergency bypass (use carefully)
-  EMERGENCY_MODE: z.coerce.boolean().default(false),
   
   // Rate Limiting
   ENABLE_RATE_LIMITING: z.coerce.boolean().default(true),
