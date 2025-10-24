@@ -36,8 +36,8 @@ RUN npm run build
 FROM node:18-alpine AS runner
 WORKDIR /app
 
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init curl
+# Install dumb-init, OpenSSL and other dependencies
+RUN apk add --no-cache dumb-init curl openssl openssl-dev libc6-compat
 
 # Create app user
 RUN addgroup -g 1001 -S nodejs
@@ -61,10 +61,10 @@ USER nodejs
 EXPOSE 4000
 
 # Labels for metadata
-LABEL maintainer="SMS-SM Enterprise Team <enterprise@sms-sm.health>"
+LABEL maintainer="Maternar Santa Mariense <contato@maternarsm.com.br>"
 LABEL version="2.0.0"
-LABEL description="SMS-SM Enterprise Backend API"
-LABEL org.opencontainers.image.source="https://github.com/your-org/sms-sm-enterprise"
+LABEL description="Maternar Santa Mariense Backend API"
+LABEL org.opencontainers.image.source="https://github.com/maternar-sm/maternar-enterprise"
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
