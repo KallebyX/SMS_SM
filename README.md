@@ -302,6 +302,27 @@ bash sms-control.sh start
 
 ### Produção
 
+#### Deploy no Render (Recomendado) ⚡
+
+```bash
+# 1. Push para GitHub
+git init
+git add .
+git commit -m "Deploy Maternar"
+git push origin main
+
+# 2. Render Dashboard
+# https://dashboard.render.com
+# New + → Blueprint → Conectar repo
+
+# 3. Pronto em 10 minutos! 🎉
+```
+
+**Guia completo**: [DEPLOY_RENDER.md](DEPLOY_RENDER.md)  
+**Quickstart**: [RENDER_QUICKSTART.md](RENDER_QUICKSTART.md)
+
+#### Deploy Manual / Docker
+
 ```bash
 # Configure
 cp enterprise/backend/config-production.example enterprise/backend/.env
@@ -313,7 +334,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-### Kubernetes
+#### Kubernetes
 
 Veja: `enterprise/infrastructure/kubernetes/`
 
