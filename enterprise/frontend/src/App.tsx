@@ -31,7 +31,7 @@ function LoginForm({ onLogin }: { onLogin: (user: User, token: string) => void }
       const xhr = new XMLHttpRequest()
       
       await new Promise((resolve, reject) => {
-        xhr.open('POST', '/api/auth/login', true)
+        xhr.open('POST', 'http://localhost:4000/api/auth/login', true)
         xhr.setRequestHeader('Content-Type', 'application/json')
         
         xhr.onreadystatechange = function() {
