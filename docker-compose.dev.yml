@@ -6,7 +6,7 @@ services:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: sms_sm_dev
+      POSTGRES_DB: maternar_sm
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     volumes:
@@ -16,7 +16,7 @@ services:
     networks:
       - sms-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d sms_sm_dev"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d maternar_sm"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -46,9 +46,9 @@ services:
     environment:
       NODE_ENV: development
       PORT: 4000
-      DATABASE_URL: postgresql://postgres:password@database:5432/sms_sm_dev
+      DATABASE_URL: postgresql://postgres:password@database:5432/maternar_sm
       REDIS_URL: redis://default:password@redis:6379
-      JWT_SECRET: super-secret-jwt-key-for-development
+      JWT_SECRET: maternar_sm_2024_super_secret_key_for_development
       JWT_EXPIRES_IN: 7d
       CORS_ORIGINS: http://localhost:3000,http://frontend:3000
     ports:
