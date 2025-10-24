@@ -21,18 +21,9 @@ export const createContext = async ({ req }: { req: any }): Promise<Context> => 
         : authHeader
       
       if (token) {
-        // Skip validation for mock token in development
-        if (token === 'mock-jwt-token' && process.env.NODE_ENV === 'development') {
-          context.user = {
-            userId: 'mock-user-id',
-            email: 'mock@example.com',
-            role: 'USER'
-          }
-        } else {
-          // Verify real token
-          const payload = authService.verifyToken(token)
-          context.user = payload
-        }
+        // Verify token
+        const payload = authService.verifyToken(token)
+        context.user = payload
       }
     }
   } catch (error) {
