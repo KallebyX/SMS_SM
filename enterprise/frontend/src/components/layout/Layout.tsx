@@ -54,7 +54,7 @@ export const Layout: React.FC = () => {
         <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
           <div className="absolute top-0 right-0 -mr-12 pt-2">
             <button
-              className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maternar-blue-300"
               onClick={() => setSidebarOpen(false)}
             >
               <X className="h-6 w-6 text-white" />
@@ -63,11 +63,11 @@ export const Layout: React.FC = () => {
           <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
             <div className="flex-shrink-0 flex items-center px-4">
               <img
-                className="h-8 w-auto"
-                src="/logo.svg"
-                alt="SMS-SM"
+                className="h-10 w-auto"
+                src="/logo.png"
+                alt="Maternar Santa Mariense"
               />
-              <span className="ml-2 text-xl font-bold text-gray-900">SMS-SM</span>
+              <span className="ml-2 text-lg font-bold text-maternar-blue-700">Maternar</span>
             </div>
             <nav className="mt-5 px-2 space-y-1">
               {navigation.map((item) => {
@@ -103,11 +103,11 @@ export const Layout: React.FC = () => {
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <img
-                  className="h-8 w-auto"
-                  src="/logo.svg"
-                  alt="SMS-SM"
+                  className="h-10 w-auto"
+                  src="/logo.png"
+                  alt="Maternar Santa Mariense"
                 />
-                <span className="ml-2 text-xl font-bold text-gray-900">SMS-SM</span>
+                <span className="ml-2 text-lg font-bold text-maternar-blue-700">Maternar</span>
               </div>
               <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
                 {navigation.map((item) => {
@@ -118,13 +118,13 @@ export const Layout: React.FC = () => {
                       to={item.href}
                       className={`${
                         current
-                          ? 'bg-blue-100 text-blue-900'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          ? 'bg-maternar-blue-100 text-maternar-blue-900'
+                          : 'text-gray-600 hover:bg-maternar-blue-50 hover:text-maternar-blue-900'
                       } group flex items-center px-2 py-2 text-sm font-medium rounded-md`}
                     >
                       <item.icon
                         className={`${
-                          current ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'
+                          current ? 'text-maternar-blue-600' : 'text-gray-400 group-hover:text-maternar-blue-500'
                         } mr-3 flex-shrink-0 h-5 w-5`}
                       />
                       {item.name}
@@ -141,7 +141,7 @@ export const Layout: React.FC = () => {
         {/* Top header */}
         <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
           <button
-            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
+            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maternar-blue-500 md:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-6 w-6" />
@@ -168,7 +168,7 @@ export const Layout: React.FC = () => {
             </div>
             <div className="ml-4 flex items-center md:ml-6">
               {/* Notifications */}
-              <button className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <button className="bg-white p-1 rounded-full text-gray-400 hover:text-maternar-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-maternar-blue-500">
                 <Bell className="h-6 w-6" />
               </button>
 
@@ -176,7 +176,7 @@ export const Layout: React.FC = () => {
               <div className="ml-3 relative">
                 <div>
                   <button
-                    className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-maternar-blue-500"
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <Avatar
