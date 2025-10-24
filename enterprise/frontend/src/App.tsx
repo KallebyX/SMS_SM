@@ -28,19 +28,20 @@ import { Layout } from './components/layout/Layout'
 
 // Providers
 import { AuthProvider } from './components/providers/AuthProvider'
+import { ProtectedRoute } from './components/auth/ProtectedRoute'
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Auth Routes */}
+          {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           
           {/* Protected Routes with Layout */}
-          <Route element={<Layout />}>
+          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/gamification" element={<Gamification />} />
@@ -52,8 +53,10 @@ function App() {
             <Route path="/links" element={<Links />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/user-management" element={<UserManagement />} />
+            
+            {/* Admin only routes */}
+            <Route path="/admin" element={<ProtectedRoute requiredRole={['ADMIN']}><Admin /></ProtectedRoute>} />
+            <Route path="/user-management" element={<ProtectedRoute requiredRole={['ADMIN', 'MANAGER']}><UserManagement /></ProtectedRoute>} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/documents" element={<Documents />} />
           </Route>
