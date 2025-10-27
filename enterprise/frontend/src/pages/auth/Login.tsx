@@ -15,23 +15,17 @@ import {
 
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
+import { useAuth } from '../../hooks/useAuth'
 
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { login, loading } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    
-    // Simulate login process
-    setTimeout(() => {
-      setLoading(false)
-      // Redirect to dashboard
-      window.location.href = '/dashboard'
-    }, 2000)
+    await login(email, password)
   }
 
   const features = [
