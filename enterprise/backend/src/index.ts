@@ -45,10 +45,24 @@ class SMSEnterpriseServer {
       crossOriginEmbedderPolicy: false
     }))
     
-    // CORS
+    // CORS - Permitir qualquer origem em desenvolvimento
     this.app.use(cors({
-      origin: config.CORS_ORIGINS,
-      credentials: true
+      origin: (origin, callback) => {
+        // Em desenvolvimento, permitir qualquer origem
+        if (config.NODE_ENV === 'development') {
+          callback(null, true)
+          return
+        }
+        // Em produção, verificar origem
+        if (!origin || config.CORS_ORIGINS.includes(origin)) {
+          callback(null, true)
+        } else {
+          callback(new Error('Not allowed by CORS'))
+        }
+      },
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization']
     }))
     
     // Compression

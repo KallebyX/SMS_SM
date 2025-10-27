@@ -18,8 +18,8 @@ const configSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
   JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
   
-  // CORS
-  CORS_ORIGINS: z.string().transform(str => str.split(',')).default('http://localhost:3000,http://localhost:5173'),
+  // CORS - Permitir toda a rede local (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
+  CORS_ORIGINS: z.string().transform(str => str.split(',')).default('http://localhost:3000,http://localhost:5173,http://10.0.0.0/8,http://172.16.0.0/12,http://192.168.0.0/16'),
   
   // Rate Limiting
   ENABLE_RATE_LIMITING: z.coerce.boolean().default(true),

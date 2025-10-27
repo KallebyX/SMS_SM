@@ -1,0 +1,441 @@
+# Issues para Integração GraphQL - GitHub Import
+
+issues:
+  - title: "Integrar Training.tsx com useCourses - Substituir dados mock"
+    body: |
+      ## Descrição
+      Integrar a página de Training com o hook useCourses para buscar cursos reais do backend GraphQL.
+
+      ## Prioridade
+      🔴 Alta
+
+      ## Tempo Estimado
+      15-20 minutos
+
+      ## Tasks
+      - [ ] Importar useCourses hook em Training.tsx
+      - [ ] Substituir array `courses` hardcoded por `data?.courses` do useQuery
+      - [ ] Implementar filtros funcionais por categoria
+      - [ ] Conectar botão "Iniciar Curso" à mutation enroll()
+      - [ ] Mostrar progresso real do usuário via enrollment.progress
+      - [ ] Adicionar loading state durante carregamento de cursos
+      - [ ] Adicionar error handling com mensagens amigáveis
+      - [ ] Testar inscrição em curso
+      - [ ] Testar progresso do usuário
+      - [ ] Verificar responsividade
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Training.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_COURSES
+      query GET_MY_COURSES
+      mutation ENROLL_IN_COURSE
+      mutation COMPLETE_LESSON
+      ```
+
+      ## Como Implementar
+      ```typescript
+      import { useCourses } from '../hooks/useCourses'
+      
+      const Training: React.FC = () => {
+        const { courses, loading, enroll } = useCourses()
+        const [activeFilter, setActiveFilter] = useState('all')
+        
+        const filteredCourses = courses.filter(c => 
+          activeFilter === 'all' || c.category === activeFilter
+        )
+        
+        const handleEnroll = async (courseId: string) => {
+          await enroll(courseId)
+        }
+        
+        if (loading) return <LoadingSpinner />
+        
+        return (
+          // JSX usando filteredCourses
+        )
+      }
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:high"
+      - "training"
+
+  - title: "Integrar Projects.tsx com useProjects - CRUD de Projetos"
+    body: |
+      ## Descrição
+      Conectar a página de Projects ao backend GraphQL para operações CRUD completas.
+
+      ## Prioridade
+      🔴 Alta
+
+      ## Tempo Estimado
+      20-25 minutos
+
+      ## Tasks
+      - [ ] Importar useProjects hook
+      - [ ] Substituir array `projects` por dados do backend
+      - [ ] Conectar CreateProjectModal à mutation createProject()
+      - [ ] Implementar Kanban board com dados reais
+      - [ ] Conectar criação de tarefas à mutation createTask()
+      - [ ] Implementar atualização de status de tarefas (updateTask mutation)
+      - [ ] Implementar exclusão de tarefas (deleteTask mutation)
+      - [ ] Adicionar loading states em todas as operações
+      - [ ] Adicionar confirmação antes de deletar
+      - [ ] Testar criação de projeto
+      - [ ] Testar CRUD completo de tarefas
+      - [ ] Verificar performance com muitos projetos
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Projects.tsx`
+      - `enterprise/frontend/src/components/modals/CreateProjectModal.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_PROJECTS
+      mutation CREATE_PROJECT
+      mutation CREATE_TASK
+      mutation UPDATE_TASK
+      mutation DELETE_TASK
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:high"
+      - "projects"
+
+  - title: "Integrar Calendar.tsx com useCalendar - Eventos Reais"
+    body: |
+      ## Descrição
+      Conectar calendário ao backend para criar e visualizar eventos reais.
+
+      ## Prioridade
+      🔴 Alta
+
+      ## Tempo Estimado
+      15-20 minutos
+
+      ## Tasks
+      - [ ] Importar useCalendar hook
+      - [ ] Substituir array `events` por dados do backend
+      - [ ] Conectar CreateEventModal à mutation createEvent()
+      - [ ] Implementar filtros por período (mensal, semanal, diário)
+      - [ ] Adicionar confirmação de presença aos eventos
+      - [ ] Mostrar eventos no calendário visual correto
+      - [ ] Implementar navegação entre meses
+      - [ ] Adicionar loading states
+      - [ ] Testar criação de eventos
+      - [ ] Testar filtros de período
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Calendar.tsx`
+      - `enterprise/frontend/src/components/modals/CreateEventModal.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_EVENTS
+      mutation CREATE_EVENT
+      mutation UPDATE_EVENT_ATTENDANCE
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:high"
+      - "calendar"
+
+  - title: "Integrar Gamification.tsx com useGamification - Conquistas e XP"
+    body: |
+      ## Descrição
+      Conectar gamificação ao backend para mostrar conquistas, XP e ranking reais.
+
+      ## Prioridade
+      🟡 Média
+
+      ## Tempo Estimado
+      15 minutos
+
+      ## Tasks
+      - [ ] Importar useGamification hook
+      - [ ] Substituir arrays `achievements` e `leaderboard` por queries reais
+      - [ ] Buscar userStats do backend via query ME
+      - [ ] Mostrar progresso real de conquistas
+      - [ ] Atualizar XP e level em tempo real
+      - [ ] Implementar ranking real de usuários
+      - [ ] Adicionar loading states
+      - [ ] Testar atualização de XP
+      - [ ] Testar desbloqueio de conquistas
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Gamification.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_ACHIEVEMENTS
+      query GET_MY_ACHIEVEMENTS
+      query ME
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:medium"
+      - "gamification"
+
+  - title: "Integrar Chat.tsx com useChat - Chat em Tempo Real via WebSocket"
+    body: |
+      ## Descrição
+      Implementar chat em tempo real com WebSocket usando subscriptions GraphQL.
+
+      ## Prioridade
+      🟡 Média
+
+      ## Tempo Estimado
+      25-30 minutos
+
+      ## Tasks
+      - [ ] Importar useChat hook
+      - [ ] Substituir arrays `chats` e `messages` por queries reais
+      - [ ] Conectar envio de mensagem à mutation sendMessage()
+      - [ ] Implementar subscription MESSAGE_ADDED para tempo real
+      - [ ] Mostrar status online/offline dos usuários
+      - [ ] Implementar typing indicators
+      - [ ] Adicionar loading states durante envio
+      - [ ] Implementar paginação de mensagens antigas
+      - [ ] Testar envio de mensagens
+      - [ ] Testar recebimento em tempo real
+      - [ ] Testar múltiplos canais
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Chat.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_CHANNELS
+      query GET_MESSAGES
+      mutation SEND_MESSAGE
+      subscription MESSAGE_ADDED
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:medium"
+      - "chat"
+      - "websocket"
+
+  - title: "Integrar Policies.tsx com usePolicies - Visualização PDF"
+    body: |
+      ## Descrição
+      Conectar biblioteca de políticas ao backend e implementar visualização real de PDFs.
+
+      ## Prioridade
+      🟡 Média
+
+      ## Tempo Estimado
+      15-20 minutos
+
+      ## Tasks
+      - [ ] Importar usePolicies hook
+      - [ ] Substituir dados mock por useQuery(GET_POLICIES)
+      - [ ] Conectar botão "Confirmar leitura" à mutation markAsRead()
+      - [ ] Implementar visualização de PDF real do backend
+      - [ ] Adicionar tracking de leitura (userRead)
+      - [ ] Mostrar badge de políticas não lidas
+      - [ ] Implementar download de políticas
+      - [ ] Adicionar loading states
+      - [ ] Testar confirmação de leitura
+      - [ ] Testar visualização PDF
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Policies.tsx`
+      - `enterprise/frontend/src/components/PDFViewer.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_POLICIES
+      mutation MARK_POLICY_AS_READ
+      mutation ACKNOWLEDGE_POLICY
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:medium"
+      - "policies"
+
+  - title: "Integrar Links.tsx com useLinks - Links Úteis"
+    body: |
+      ## Descrição
+      Substituir links mock por dados reais do backend.
+
+      ## Prioridade
+      🟢 Baixa
+
+      ## Tempo Estimado
+      10-15 minutos
+
+      ## Tasks
+      - [ ] Importar useLinks hook
+      - [ ] Substituir array `links` por useQuery(GET_LINKS)
+      - [ ] Implementar filtros por categoria
+      - [ ] Adicionar contador de visitas
+      - [ ] Implementar busca de links
+      - [ ] Adicionar loading states
+      - [ ] Testar navegação para links externos
+      - [ ] Testar links internos
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Links.tsx`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_LINKS
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:low"
+      - "links"
+
+  - title: "Integrar Settings.tsx com UPDATE_PROFILE - Salvar Configurações"
+    body: |
+      ## Descrição
+      Implementar salvamento real de configurações do usuário via mutation.
+
+      ## Prioridade
+      🟡 Média
+
+      ## Tempo Estimado
+      20-25 minutos
+
+      ## Tasks
+      - [ ] Criar mutation UPDATE_PROFILE em mutations.ts
+      - [ ] Conectar handleSave() à mutation
+      - [ ] Implementar validação de campos antes de salvar
+      - [ ] Adicionar loading state durante salvamento
+      - [ ] Mostrar toast de sucesso/erro
+      - [ ] Recarregar dados do usuário após salvar
+      - [ ] Adicionar confirmação para mudanças críticas
+      - [ ] Implementar cancelamento de alterações
+      - [ ] Testar salvamento de configurações
+      - [ ] Testar validação de campos
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Settings.tsx`
+      - `enterprise/frontend/src/graphql/mutations.ts`
+
+      ## GraphQL Utilizado
+      ```graphql
+      mutation UPDATE_PROFILE
+      query ME
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:medium"
+      - "settings"
+
+  - title: "Integrar Analytics.tsx com dados reais do backend"
+    body: |
+      ## Descrição
+      Substituir gráficos mock por métricas reais do banco de dados.
+
+      ## Prioridade
+      🟡 Média
+
+      ## Tempo Estimado
+      20-25 minutos
+
+      ## Tasks
+      - [ ] Criar query GET_ANALYTICS no backend
+      - [ ] Substituir dados mock dos gráficos por dados reais
+      - [ ] Implementar filtros por período (7d, 30d, 90d, 1y)
+      - [ ] Conectar KPIs ao backend (usuários ativos, projetos, etc)
+      - [ ] Atualizar métricas em tempo real
+      - [ ] Implementar exportação de relatórios (PDF/Excel)
+      - [ ] Adicionar comparação com período anterior
+      - [ ] Adicionar loading states
+      - [ ] Testar métricas reais
+      - [ ] Testar filtros de período
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Analytics.tsx`
+      - `enterprise/frontend/src/graphql/queries.ts`
+
+      ## GraphQL Utilizado
+      ```graphql
+      query GET_ANALYTICS
+      query GET_DASHBOARD_METRICS
+      ```
+
+    labels:
+      - "frontend"
+      - "graphql"
+      - "priority:medium"
+      - "analytics"
+
+  - title: "Integrar Admin.tsx com gestão de usuários e permissões"
+    body: |
+      ## Descrição
+      Implementar CRUD completo de usuários no painel administrativo.
+
+      ## Prioridade
+      🔴 Alta
+
+      ## Tempo Estimado
+      30-40 minutos
+
+      ## Tasks
+      - [ ] Criar queries GET_USERS, GET_LOGS no backend
+      - [ ] Criar mutations CREATE_USER, UPDATE_USER, DELETE_USER
+      - [ ] Implementar listagem de usuários real
+      - [ ] Implementar criação de usuário com validação
+      - [ ] Implementar edição de usuário
+      - [ ] Implementar exclusão de usuário (com confirmação)
+      - [ ] Implementar gerenciamento de permissões (roles)
+      - [ ] Adicionar filtros por role (ADMIN, MANAGER, USER)
+      - [ ] Adicionar busca de usuários
+      - [ ] Implementar paginação se necessário
+      - [ ] Adicionar loading states
+      - [ ] Testar CRUD completo
+      - [ ] Testar mudança de permissões
+
+      ## Arquivos a Modificar
+      - `enterprise/frontend/src/pages/Admin.tsx`
+      - `enterprise/frontend/src/pages/UserManagement.tsx`
+      - `enterprise/frontend/src/graphql/queries.ts`
+      - `enterprise/frontend/src/graphql/mutations.ts`
+      - `enterprise/backend/src/graphql/typeDefs.ts` (se necessário)
+      - `enterprise/backend/src/graphql/resolvers.ts` (se necessário)
+
+      ## GraphQL a Criar
+      ```graphql
+      query GetUsers {
+        users {
+          id email username firstName lastName role
+          department position totalXP level isOnline createdAt
+        }
+      }
+      
+      mutation CreateUser($input: CreateUserInput!) {
+        createUser(input: $input) {
+          id email username firstName lastName role
+        }
+      }
+      ```
+
+    labels:
+      - "frontend"
+      - "backend"
+      - "graphql"
+      - "priority:high"
+      - "admin"
+
