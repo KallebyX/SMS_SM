@@ -21,11 +21,14 @@ import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Avatar } from '../components/ui/Avatar'
+import { CreateEventModal } from '../components/modals/CreateEventModal'
 
 const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [view, setView] = useState<'month' | 'week' | 'day'>('month')
   const [selectedEvent, setSelectedEvent] = useState<any>(null)
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>()
 
   const events = [
     {
@@ -142,7 +145,7 @@ const Calendar: React.FC = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filtros
           </Button>
-          <Button className="bg-maternar-blue-600">
+          <Button className="bg-maternar-blue-600" onClick={() => setShowCreateModal(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Novo Evento
           </Button>
@@ -400,6 +403,17 @@ const Calendar: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Create Event Modal */}
+      <CreateEventModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        selectedDate={selectedDate}
+        onSuccess={(newEvent) => {
+          // TODO: Add new event to calendar
+          console.log('Novo evento criado:', newEvent)
+        }}
+      />
     </div>
   )
 }

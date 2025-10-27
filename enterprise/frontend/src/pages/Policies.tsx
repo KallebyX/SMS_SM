@@ -19,10 +19,15 @@ import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Avatar } from '../components/ui/Avatar'
+import { PDFViewer } from '../components/PDFViewer'
+import { useToast } from '../components/ui/Toast'
 
 const Policies: React.FC = () => {
+  const { showToast } = useToast()
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedPolicy, setSelectedPolicy] = useState<any>(null)
+  const [showPDFViewer, setShowPDFViewer] = useState(false)
 
   const categories = [
     { id: 'all', name: 'Todas', count: 24 },
@@ -378,11 +383,28 @@ const Policies: React.FC = () => {
                 </div>
                 
                 <div className="flex flex-col space-y-2 ml-6">
-                  <Button size="sm">
+                  <Button 
+                    size="sm"
+                    onClick={() => {
+                      setSelectedPolicy(policy)
+                      setShowPDFViewer(true)
+                    }}
+                  >
                     <Eye className="w-4 h-4 mr-1" />
                     Visualizar
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      showToast({
+                        type: 'success',
+                        title: 'Download iniciado',
+                        message: `Baixando ${policy.title}...`
+                      })
+                      // TODO: Implement actual PDF download
+                    }}
+                  >
                     <Download className="w-4 h-4 mr-1" />
                     Download
                   </Button>
@@ -396,6 +418,19 @@ const Policies: React.FC = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* PDF Viewer Modal */}
+      {selectedPolicy && (
+        <PDFViewer
+          isOpen={showPDFViewer}
+          onClose={() => {
+            setShowPDFViewer(false)
+            setSelectedPolicy(null)
+          }}
+          pdfUrl={`/policies/${selectedPolicy.id}.pdf`}
+          title={selectedPolicy.title}
+        />
+      )}
     </div>
   )
 }

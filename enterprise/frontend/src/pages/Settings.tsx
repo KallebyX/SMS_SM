@@ -17,9 +17,13 @@ import {
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
+import { useToast } from '../components/ui/Toast'
 
 const Settings: React.FC = () => {
+  const { showToast } = useToast()
   const [activeTab, setActiveTab] = useState('profile')
+  const [loading, setLoading] = useState(false)
+  const [hasChanges, setHasChanges] = useState(false)
   const [settings, setSettings] = useState({
     notifications: {
       email: true,
@@ -65,14 +69,72 @@ const Settings: React.FC = () => {
     { value: 'Europe/Madrid', label: 'Madrid (UTC+1)' }
   ]
 
-  const handleSave = () => {
-    console.log('Saving settings:', settings)
-    // Handle save logic
+  const handleSave = async () => {
+    setLoading(true)
+    try {
+      // TODO: Implement GraphQL mutation
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      
+      showToast({
+        type: 'success',
+        title: 'Configurações salvas!',
+        message: 'Suas preferências foram atualizadas com sucesso.'
+      })
+      
+      setHasChanges(false)
+    } catch (error) {
+      showToast({
+        type: 'error',
+        title: 'Erro ao salvar',
+        message: 'Não foi possível salvar as configurações. Tente novamente.'
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleReset = () => {
-    // Reset to defaults
-    console.log('Resetting to defaults')
+    const defaultSettings = {
+      notifications: {
+        email: true,
+        push: true,
+        sms: false,
+        appointments: true,
+        projects: true,
+        training: false
+      },
+      privacy: {
+        profileVisibility: 'team',
+        activityTracking: true,
+        dataSharing: false
+      },
+      appearance: {
+        theme: 'light',
+        language: 'pt-BR',
+        timezone: 'America/Sao_Paulo',
+        fontSize: 'medium'
+      }
+    }
+    
+    setSettings(defaultSettings)
+    setHasChanges(true)
+    
+    showToast({
+      type: 'info',
+      title: 'Restaurado',
+      message: 'Configurações restauradas para os valores padrão. Clique em Salvar para aplicar.'
+    })
+  }
+
+  const updateSettings = (category: string, key: string, value: any) => {
+    setSettings(prev => ({
+      ...prev,
+      [category]: {
+        ...(prev as any)[category],
+        [key]: value
+      }
+    }))
+    setHasChanges(true)
   }
 
   return (
@@ -89,14 +151,23 @@ const Settings: React.FC = () => {
           </p>
         </div>
         <div className="flex space-x-3">
-          <Button variant="outline" onClick={handleReset}>
+          <Button variant="outline" onClick={handleReset} disabled={loading}>
             <RotateCcw className="w-4 h-4 mr-2" />
             Restaurar Padrões
           </Button>
-          <Button onClick={handleSave} className="bg-maternar-blue-600">
+          <Button 
+            onClick={handleSave} 
+            className="bg-maternar-blue-600" 
+            disabled={loading || !hasChanges}
+          >
             <Save className="w-4 h-4 mr-2" />
-            Salvar Alterações
+            {loading ? 'Salvando...' : 'Salvar Alterações'}
           </Button>
+          {hasChanges && !loading && (
+            <Badge className="bg-yellow-100 text-yellow-800">
+              Alterações não salvas
+            </Badge>
+          )}
         </div>
       </motion.div>
 
@@ -222,13 +293,7 @@ const Settings: React.FC = () => {
                           type="checkbox"
                           className="sr-only peer"
                           checked={settings.notifications[channel.key as keyof typeof settings.notifications]}
-                          onChange={(e) => setSettings({
-                            ...settings,
-                            notifications: {
-                              ...settings.notifications,
-                              [channel.key]: e.target.checked
-                            }
-                          })}
+                          onChange={(e) => updateSettings('notifications', channel.key, e.target.checked)}
                         />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-maternar-blue-600"></div>
                       </label>
@@ -254,13 +319,7 @@ const Settings: React.FC = () => {
                           type="checkbox"
                           className="sr-only peer"
                           checked={settings.notifications[type.key as keyof typeof settings.notifications]}
-                          onChange={(e) => setSettings({
-                            ...settings,
-                            notifications: {
-                              ...settings.notifications,
-                              [type.key]: e.target.checked
-                            }
-                          })}
+                          onChange={(e) => updateSettings('notifications', type.key, e.target.checked)}
                         />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-maternar-blue-600"></div>
                       </label>

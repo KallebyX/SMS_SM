@@ -15,6 +15,23 @@ import {
   PieChart,
   LineChart
 } from 'lucide-react'
+import {
+  LineChart as RechartsLineChart,
+  BarChart as RechartsBarChart,
+  PieChart as RechartsPieChart,
+  Line,
+  Bar,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  Area,
+  AreaChart
+} from 'recharts'
 
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
@@ -191,12 +208,27 @@ const Analytics: React.FC = () => {
                   <option>Treinamentos</option>
                 </select>
               </div>
-              <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
-                <div className="text-center">
-                  <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">Gráfico de Tendências</p>
-                  <p className="text-sm text-gray-500">Dados simulados de crescimento mensal</p>
-                </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsLineChart data={monthlyData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="month" stroke="#6B7280" />
+                    <YAxis stroke="#6B7280" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                      }}
+                    />
+                    <Legend />
+                    <Line type="monotone" dataKey="usuarios" stroke="#1E4A7A" strokeWidth={2} name="Usuários" />
+                    <Line type="monotone" dataKey="projetos" stroke="#7AB844" strokeWidth={2} name="Projetos" />
+                    <Line type="monotone" dataKey="treinamentos" stroke="#D42E5B" strokeWidth={2} name="Treinamentos" />
+                    <Line type="monotone" dataKey="eventos" stroke="#9B9B9B" strokeWidth={2} name="Eventos" />
+                  </RechartsLineChart>
+                </ResponsiveContainer>
               </div>
             </Card>
           </motion.div>
@@ -209,12 +241,27 @@ const Analytics: React.FC = () => {
           >
             <Card className="p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">Distribuição por Departamento</h3>
-              <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
-                <div className="text-center">
-                  <PieChart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">Gráfico de Pizza</p>
-                  <p className="text-sm text-gray-500">Enfermagem: 45%, Medicina: 30%, Admin: 15%, TI: 10%</p>
-                </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsPieChart>
+                    <Pie
+                      data={departmentData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {departmentData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </RechartsPieChart>
+                </ResponsiveContainer>
               </div>
             </Card>
           </motion.div>
@@ -227,12 +274,35 @@ const Analytics: React.FC = () => {
           >
             <Card className="p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">Atividade ao Longo do Dia</h3>
-              <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
-                <div className="text-center">
-                  <LineChart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">Gráfico de Linha</p>
-                  <p className="text-sm text-gray-500">Picos de atividade: 8h, 12h, 16h</p>
-                </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={activityData}>
+                    <defs>
+                      <linearGradient id="colorActivity" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#1E4A7A" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#1E4A7A" stopOpacity={0.1}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="time" stroke="#6B7280" />
+                    <YAxis stroke="#6B7280" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="atividade" 
+                      stroke="#1E4A7A" 
+                      fillOpacity={1} 
+                      fill="url(#colorActivity)"
+                      name="Atividade"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
               </div>
             </Card>
           </motion.div>
@@ -245,12 +315,25 @@ const Analytics: React.FC = () => {
           >
             <Card className="p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">Métricas de Performance</h3>
-              <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
-                <div className="text-center">
-                  <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">Gráfico de Barras</p>
-                  <p className="text-sm text-gray-500">Eficiência: 90%, Satisfação: 94%, Produtividade: 88%</p>
-                </div>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsBarChart data={performanceData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="period" stroke="#6B7280" />
+                    <YAxis stroke="#6B7280" />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '8px'
+                      }}
+                    />
+                    <Legend />
+                    <Bar dataKey="eficiencia" fill="#1E4A7A" name="Eficiência" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="satisfacao" fill="#7AB844" name="Satisfação" radius={[8, 8, 0, 0]} />
+                    <Bar dataKey="produtividade" fill="#D42E5B" name="Produtividade" radius={[8, 8, 0, 0]} />
+                  </RechartsBarChart>
+                </ResponsiveContainer>
               </div>
             </Card>
           </motion.div>

@@ -24,11 +24,13 @@ import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { Avatar } from '../components/ui/Avatar'
 import { Progress } from '../components/ui/Progress'
+import { CreateProjectModal } from '../components/modals/CreateProjectModal'
 
 const Projects: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'kanban'>('grid')
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   const projects = [
     {
@@ -183,7 +185,7 @@ const Projects: React.FC = () => {
             <Filter className="w-4 h-4 mr-2" />
             Filtros
           </Button>
-          <Button className="bg-maternar-blue-600">
+          <Button className="bg-maternar-blue-600" onClick={() => setShowCreateModal(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Novo Projeto
           </Button>
@@ -468,6 +470,16 @@ const Projects: React.FC = () => {
           ))}
         </div>
       )}
+
+      {/* Create Project Modal */}
+      <CreateProjectModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={(newProject) => {
+          // TODO: Add new project to list
+          console.log('Novo projeto criado:', newProject)
+        }}
+      />
     </div>
   )
 }

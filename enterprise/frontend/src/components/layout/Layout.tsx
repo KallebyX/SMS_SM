@@ -24,6 +24,8 @@ import {
 import { Button } from '../ui/Button'
 import { Avatar } from '../ui/Avatar'
 import { useAuth } from '../providers/AuthProvider'
+import { NotificationCenter } from '../NotificationCenter'
+import { GlobalSearch } from '../GlobalSearch'
 
 export const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -147,30 +149,12 @@ export const Layout: React.FC = () => {
             <Menu className="h-6 w-6" />
           </button>
           <div className="flex-1 px-4 flex justify-between">
-            <div className="flex-1 flex">
-              <form className="w-full flex md:ml-0" action="#" method="GET">
-                <label htmlFor="search-field" className="sr-only">
-                  Buscar
-                </label>
-                <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                  <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                    <Search className="h-5 w-5" />
-                  </div>
-                  <input
-                    id="search-field"
-                    className="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent"
-                    placeholder="Buscar..."
-                    type="search"
-                    name="search"
-                  />
-                </div>
-              </form>
+            <div className="flex-1 flex items-center">
+              <GlobalSearch />
             </div>
-            <div className="ml-4 flex items-center md:ml-6">
+            <div className="ml-4 flex items-center md:ml-6 space-x-2">
               {/* Notifications */}
-              <button className="bg-white p-1 rounded-full text-gray-400 hover:text-maternar-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-maternar-blue-500">
-                <Bell className="h-6 w-6" />
-              </button>
+              <NotificationCenter />
 
               {/* Profile dropdown */}
               <div className="ml-3 relative">

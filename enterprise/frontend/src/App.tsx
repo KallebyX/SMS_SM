@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import { apolloClient } from './lib/apollo'
+import { ToastProvider } from './components/ui/Toast'
 
 // Auth Pages
 import Login from './pages/auth/Login'
@@ -24,6 +25,7 @@ import UserManagement from './pages/UserManagement'
 import Analytics from './pages/Analytics'
 import Documents from './pages/Documents'
 import NotFound from './pages/NotFound'
+import ProjectDetail from './pages/ProjectDetail'
 
 // Layout
 import { Layout } from './components/layout/Layout'
@@ -35,8 +37,9 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute'
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
-      <AuthProvider>
-        <Router>
+      <ToastProvider>
+        <AuthProvider>
+          <Router>
           <Routes>
             {/* Public Auth Routes */}
             <Route path="/login" element={<Login />} />
@@ -52,6 +55,7 @@ function App() {
               <Route path="/chat" element={<Chat />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/projects" element={<Projects />} />
+              <Route path="/projects/:id" element={<ProjectDetail />} />
               <Route path="/policies" element={<Policies />} />
               <Route path="/links" element={<Links />} />
               <Route path="/profile" element={<Profile />} />
@@ -67,8 +71,9 @@ function App() {
             {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </Router>
-      </AuthProvider>
+          </Router>
+        </AuthProvider>
+      </ToastProvider>
     </ApolloProvider>
   )
 }
