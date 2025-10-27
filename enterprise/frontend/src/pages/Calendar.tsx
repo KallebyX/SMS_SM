@@ -410,8 +410,7 @@ const Calendar: React.FC = () => {
         onClose={() => setShowCreateModal(false)}
         selectedDate={selectedDate}
         onSuccess={(newEvent) => {
-          // TODO: Add new event to calendar
-          console.log('Novo evento criado:', newEvent)
+          // TODO: Add new event to calendar via GraphQL mutation
         }}
       />
     </div>

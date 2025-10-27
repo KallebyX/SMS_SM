@@ -476,8 +476,7 @@ const Projects: React.FC = () => {
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onSuccess={(newProject) => {
-          // TODO: Add new project to list
-          console.log('Novo projeto criado:', newProject)
+          // TODO: Add new project to list via GraphQL mutation
         }}
       />
     </div>

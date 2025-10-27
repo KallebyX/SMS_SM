@@ -1,150 +1,139 @@
 # 🏥 Maternar Santa Mariense
 
-> Sistema completo de gestão, educação e comunicação para profissionais de saúde
+> Plataforma empresarial integrada para gestão, educação e comunicação em saúde
 
 **Versão**: 2.0.0  
-**Status**: ✅ 100% Completo + Melhorias Implementadas - Pronto para Produção
-
-**Última atualização**: 27 de outubro de 2025 - **15 melhorias críticas adicionadas** 🎉
+**Status**: ✅ Produção
 
 ---
 
-## 🚀 Início Rápido (3 minutos)
+## 🚀 Início Rápido
 
 ```bash
-# 1. Inicie o Docker Desktop (clique no ícone)
+# Iniciar sistema
+docker-compose up -d
 
-# 2. Execute o sistema
-cd /Users/kalleby/Downloads/SMS_SM
-bash sms-control.sh start
+# Executar migrations (primeira vez)
+docker-compose exec backend npx prisma migrate dev
+docker-compose exec backend npm run db:seed
 
-# 3. Inicialize o banco (apenas primeira vez)
-cd enterprise/backend
-bash init-database.sh
-
-# 4. Acesse no navegador
+# Acessar
 open http://localhost:3000
-
-# 5. Faça login
-# Email: admin@maternarsm.com.br
-# Senha: admin123
 ```
+
+**Login**: `admin@maternarsm.com.br` / `admin123`
 
 ---
 
 ## ✨ Funcionalidades
 
-- 🏆 **Sistema de Gamificação** - XP, níveis e conquistas
+### Core
+- 🏆 **Gamificação** - XP, níveis, conquistas e ranking
 - 📚 **Plataforma de Cursos** - LMS completo com certificados
-- 💬 **Chat em Tempo Real** - Socket.IO com canais
-- 📅 **Calendário** - Gestão de eventos e compromissos
+- 💬 **Chat em Tempo Real** - Canais, mensagens e typing indicators
+- 📅 **Calendário** - Eventos, convites e lembretes
 - 📋 **Projetos Kanban** - Gestão ágil de tarefas
 - 📑 **Biblioteca de Políticas** - Documentos versionados
 - 🔗 **Links Úteis** - Acesso rápido a recursos
 
+### UX Moderna
+- ⚡ **Busca Global** - Cmd/Ctrl+K para buscar em tudo
+- 🔔 **Centro de Notificações** - Real-time com badge contador
+- 📊 **Gráficos Interativos** - Analytics com Recharts
+- 💾 **Feedback Visual** - Toast system em todas ações
+- 📄 **PDF Viewer** - Visualizar documentos no navegador
+- 📤 **Upload Drag & Drop** - Com preview de imagens
+- 🎯 **Modals Inteligentes** - Validação em tempo real
+
+### Admin
+- 👑 **Painel Admin** - 6 seções de gerenciamento
+- 👥 **Gestão de Usuários** - Criar, editar, permissões
+- 📊 **Monitoramento** - Sistema, performance, logs
+- 🔒 **Segurança** - SSL, firewall, backups
+- 🗄️ **Database** - Operações e manutenção
+
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ Tecnologias
 
-### Backend (Porta 4000)
+### Backend
 - Node.js 18 + Express + TypeScript
-- GraphQL (Apollo Server)
-- Prisma ORM (PostgreSQL)
-- Socket.IO (tempo real)
-- Redis (cache)
-- JWT (autenticação)
+- GraphQL (Apollo Server) - 19 queries, 18 mutations
+- Prisma ORM + PostgreSQL
+- Socket.IO (WebSocket)
+- Redis (cache e sessions)
+- JWT + Bcrypt
 
-### Frontend (Porta 3000)
+### Frontend
 - React 18 + TypeScript
-- Vite (build tool)
-- Tailwind CSS (cores Maternar)
-- Apollo Client (GraphQL)
-- Zustand (state)
-- i18next (i18n - 500+ traduções)
+- Vite
+- Tailwind CSS (tema Maternar)
+- Apollo Client
+- React Hook Form + Zod
+- Recharts (gráficos)
+- Framer Motion (animações)
 
 ### Infraestrutura
 - Docker Compose (4 serviços)
 - PostgreSQL 15
 - Redis 7
+- Render.com ready
 
 ---
 
-## 🎨 Identidade Visual
+## 🎨 Tema Maternar
 
-### Cores Oficiais
+Paleta de 40 cores extraídas da logo:
 
 ```css
-🔵 Azul Maternar:     #1E4A7A  /* maternar-blue-500 */
-🟢 Verde Maternar:    #7AB844  /* maternar-green-500 */
-🔴 Rosa Maternar:     #D42E5B  /* maternar-pink-500 */
-⚪ Cinza Maternar:    #9B9B9B  /* maternar-gray-500 */
+Azul:  #1E4A7A  (maternar-blue-500)
+Verde: #7AB844  (maternar-green-500)
+Rosa:  #D42E5B  (maternar-pink-500)
+Cinza: #9B9B9B  (maternar-gray-500)
 ```
-
-Paleta completa com 40 variações (50-900) disponível no `tailwind.config.js`
 
 ---
 
-## 💻 Instalação
+## 🚢 Deploy
 
-### Pré-requisitos
-
-- Node.js 18+
-- PostgreSQL 14+
-- Redis 7+
-- Docker Desktop (recomendado)
-
-### Com Docker (Recomendado)
+### Render (Recomendado - 10 minutos)
 
 ```bash
-# Inicie todos os serviços
-bash sms-control.sh start
+# 1. Push para GitHub
+git push origin main
 
-# Inicialize o banco (primeira vez)
-cd enterprise/backend
-bash init-database.sh
+# 2. Render Dashboard
+# https://dashboard.render.com
+# New + → Blueprint → Deploy
+
+# 3. Configurar CORS_ORIGINS após deploy
 ```
 
-### Sem Docker
+**Custo**: $24/mês (Starter) ou Free tier
 
-Veja: **[INSTALACAO_MANUAL.md](INSTALACAO_MANUAL.md)**
+### Docker Local
+
+```bash
+docker-compose up -d
+```
 
 ---
 
 ## 🔐 Segurança
 
-### 7 Camadas de Proteção
-
-- ✅ **JWT** (access 7d + refresh 30d)
-- ✅ **Bcrypt** (salt 12 rounds)
-- ✅ **RBAC** (Admin/Manager/User)
-- ✅ **Rate Limiting** (1000 req/15min)
-- ✅ **Helmet** (headers seguros)
-- ✅ **CORS** (restrito)
-- ✅ **Sanitização** (anti-XSS)
-
-### Compliance
-
-- HIPAA Ready
-- GDPR Compliant
-- LGPD Compliant
+- ✅ JWT (7 dias) + Refresh (30 dias)
+- ✅ Bcrypt (12 rounds)
+- ✅ RBAC (Admin/Manager/User)
+- ✅ Rate Limiting (1000 req/15min)
+- ✅ Helmet (security headers)
+- ✅ CORS restrito
+- ✅ Input sanitization
 
 ---
 
 ## ⚡ Performance
 
-### Cache Redis
-
-```typescript
-Sessões:        7 dias
-Cursos:         5 minutos
-Conquistas:     15 minutos
-Links:          30 minutos
-Perfil user:    2 minutos
-Ranking:        5 minutos
-```
-
-### Otimizações
-
+- Cache Redis (sessões, queries, ranking)
 - Connection pooling (Prisma)
 - Compressão gzip
 - Code splitting
@@ -152,13 +141,19 @@ Ranking:        5 minutos
 
 ---
 
-## 👥 Usuários de Teste
+## 📊 Banco de Dados
 
-| Função | Email | Senha |
-|--------|-------|-------|
-| **Admin** | admin@maternarsm.com.br | admin123 |
-| **Manager** | maria@maternarsm.com.br | user123 |
-| **User** | joao@maternarsm.com.br | user123 |
+**16 modelos Prisma**:
+- User, Course, Lesson, Achievement
+- Message, Channel, Event
+- Project, Task, Policy, Link
+- + tabelas de relacionamento
+
+**Seeds incluídos**:
+- 3 usuários de teste
+- 2 cursos completos
+- Achievements, canais, eventos
+- Projeto exemplo com tasks
 
 ---
 
@@ -170,20 +165,16 @@ bash sms-control.sh start      # Iniciar
 bash sms-control.sh status     # Status
 bash sms-control.sh logs       # Logs
 bash sms-control.sh stop       # Parar
-bash sms-control.sh reset-db   # Reset DB
-
-# Testes
-bash testar-sistema.sh         # Teste automático
 
 # Backend (em enterprise/backend/)
 npm run dev                    # Desenvolvimento
-npm run build                  # Build produção
+npm run build                  # Build
 npx prisma studio              # GUI do banco
-npx prisma migrate dev         # Migrações
+npx prisma migrate dev         # Migrations
 
 # Frontend (em enterprise/frontend/)
 npm run dev                    # Desenvolvimento
-npm run build                  # Build produção
+npm run build                  # Build
 npm test                       # Testes
 ```
 
@@ -193,84 +184,50 @@ npm test                       # Testes
 
 | Serviço | URL |
 |---------|-----|
-| **Frontend** | http://localhost:3000 |
-| **Backend** | http://localhost:4000 |
-| **GraphQL** | http://localhost:4000/graphql |
-| **Health** | http://localhost:4000/health |
+| Frontend | http://localhost:3000 |
+| GraphQL | http://localhost:4000/graphql |
+| Health | http://localhost:4000/health |
 
 ---
 
-## 📚 Documentação
+## 👥 Usuários de Teste
 
-**17 documentos completos - 8.000+ linhas**
-
-### 🚀 Começar
-| Documento | Quando Usar |
-|-----------|-------------|
-| **📚_INDICE_DOCUMENTACAO.md** | Navegar toda documentação ⭐ |
-| **🎉_SISTEMA_COMPLETO_FINAL.md** | Visão completa consolidada ⭐ |
-| **COMECE_AQUI.md** | Primeiro acesso |
-| **MATERNAR_QUICKSTART.md** | Guia passo a passo |
-
-### ✅ Validação
-| **VALIDACAO_COMPLETA.md** | Validação técnica (390 linhas) |
-| **RELATORIO_FINAL_VALIDACAO.md** | Relatório completo (1.200 linhas) |
-| **CHECKLIST_TESTE.md** | Checklist de testes |
-
-### 🚢 Deploy
-| **RENDER_QUICKSTART.md** | Deploy em 5 min no Render ⚡ |
-| **DEPLOY_RENDER.md** | Guia completo Render (730 linhas) |
-| **GUIA_DEPLOY_PRODUCAO.md** | Deploy tradicional (730 linhas) |
-| **INSTALACAO_MANUAL.md** | Setup sem Docker |
-
-### 🎨 Melhorias
-| **MELHORIAS_IMPLEMENTADAS.md** | 15 melhorias técnicas (1.000+ linhas) ⭐ |
-| **COMO_TESTAR_MELHORIAS.md** | Guia de testes das melhorias |
-| **RESUMO_FINAL_MELHORIAS.md** | Resumo executivo |
+| Função | Email | Senha |
+|--------|-------|-------|
+| Admin | admin@maternarsm.com.br | admin123 |
+| Manager | maria@maternarsm.com.br | user123 |
+| User | joao@maternarsm.com.br | user123 |
 
 ---
 
-## 🗄️ Banco de Dados
+## 📦 Estrutura
 
-### Schema (16 Modelos)
-
-- User, Course, Lesson, Achievement
-- Message, Channel, Event
-- Project, Task, Policy, Link
-- + tabelas de relacionamento
-
-### Dados de Exemplo
-
-- 3 usuários (@maternarsm.com.br)
-- 2 cursos de saúde
-- 3 conquistas
-- 2 canais de chat
-- 2 eventos
-- 1 projeto Kanban
-- 3 políticas
-- 4 links úteis
-
----
-
-## 🧪 Testes
-
-```bash
-# Teste rápido (2 minutos)
-bash testar-sistema.sh
-
-# Testes completos (90 minutos)
-# Siga: CHECKLIST_TESTE.md
+```
+SMS_SM/
+├── enterprise/
+│   ├── backend/           # Node.js + GraphQL + Prisma
+│   │   ├── src/
+│   │   │   ├── graphql/   # TypeDefs + Resolvers
+│   │   │   ├── services/  # Auth, Course, Cache, Socket
+│   │   │   └── config/    # Redis, JWT
+│   │   └── prisma/        # Schema + Migrations
+│   └── frontend/          # React + TypeScript + Tailwind
+│       ├── src/
+│       │   ├── components/
+│       │   │   ├── ui/    # Toast, Modal, Skeleton
+│       │   │   ├── modals/# Create forms
+│       │   │   └── ...    # NotificationCenter, GlobalSearch
+│       │   ├── pages/     # 18 páginas
+│       │   └── lib/       # validations, apollo, utils
+│       └── public/
+├── docker-compose.yml     # Orquestração
+├── render.yaml           # Deploy Render
+└── README.md
 ```
 
 ---
 
-## 🆘 Problemas Comuns
-
-### Docker não inicia
-```bash
-# Abra o Docker Desktop manualmente
-# Ou siga: INSTALACAO_MANUAL.md
-```
+## 🆘 Troubleshooting
 
 ### Porta ocupada
 ```bash
@@ -278,145 +235,66 @@ lsof -i :4000
 kill -9 <PID>
 ```
 
-### Erro de conexão com banco
+### Erro de conexão DB
 ```bash
-# Aguarde 30 segundos
-bash sms-control.sh status
+docker-compose restart database
+docker-compose ps  # Aguardar healthy
 ```
 
-### Mais ajuda
+### Reset completo
 ```bash
-bash testar-sistema.sh      # Diagnóstico
-bash sms-control.sh logs    # Ver logs
-```
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-SMS_SM/
-├── enterprise/
-│   ├── backend/              # Node.js + GraphQL
-│   │   ├── src/
-│   │   │   ├── services/     # Auth, Course, Cache, Socket
-│   │   │   ├── graphql/      # 19 queries, 18 mutations, 3 subscriptions
-│   │   │   └── config/       # Redis, JWT, CORS
-│   │   ├── prisma/           # 16 modelos, migrations
-│   │   └── scripts/          # Seeds completos
-│   └── frontend/             # React + TypeScript + Tailwind
-│       ├── src/
-│       │   ├── pages/        # 18 páginas (3 NOVAS ✨)
-│       │   ├── components/   # 33+ componentes (12 NOVOS ✨)
-│       │   │   ├── ui/       # Toast, Modal, Skeleton ✨
-│       │   │   ├── modals/   # Create Project/Event/Link ✨
-│       │   │   ├── NotificationCenter ✨
-│       │   │   ├── GlobalSearch ✨
-│       │   │   └── PDFViewer, FileUploader, etc ✨
-│       │   ├── lib/          # validations.ts ✨
-│       │   └── locales/      # 500+ traduções pt-BR
-│       └── public/           # Assets + logo
-├── docker-compose.yml        # 4 serviços orquestrados
-├── render.yaml              # Deploy automático Render ✨
-└── sms-control.sh           # Script de controle
-```
-
----
-
-## 🚢 Deploy
-
-### Desenvolvimento
-
-```bash
-bash sms-control.sh start
-```
-
-### Produção
-
-#### Deploy no Render (Recomendado) ⚡
-
-```bash
-# 1. Push para GitHub
-git init
-git add .
-git commit -m "Deploy Maternar"
-git push origin main
-
-# 2. Render Dashboard
-# https://dashboard.render.com
-# New + → Blueprint → Conectar repo
-
-# 3. Pronto em 10 minutos! 🎉
-```
-
-**Guia completo**: [DEPLOY_RENDER.md](DEPLOY_RENDER.md)  
-**Quickstart**: [RENDER_QUICKSTART.md](RENDER_QUICKSTART.md)
-
-#### Deploy Manual / Docker
-
-```bash
-# Configure
-cp enterprise/backend/config-production.example enterprise/backend/.env
-
-# Build
-docker-compose build
-
-# Deploy
+bash sms-control.sh stop
+docker-compose down -v
 docker-compose up -d
 ```
 
-#### Kubernetes
-
-Veja: `enterprise/infrastructure/kubernetes/`
-
 ---
 
-## 🌍 Internacionalização
-
-- ✅ **Português (Brasil)** - pt-BR (500+ traduções)
-- ⏸️ Inglês, Espanhol, +12 idiomas (preparado)
-
----
-
-## 📊 Status da Implementação
+## 📈 Status
 
 ```
-Progresso: ████████████████████████████ 100%
-
-✅ Rebrand Visual:          100%
-✅ Infraestrutura:          100%
-✅ Segurança:               100%
-✅ Performance:             100%
-✅ Documentação:            100%
-✅ i18n:                    100%
-✅ Backend GraphQL:         100%
-✅ WebSocket:               100%
-✅ Gamificação:             100%
-✅ Plataforma Cursos:       100%
-✅ Chat Tempo Real:         100%
-✅ Calendário:              100%
-✅ Projetos Kanban:         100%
-✅ Políticas:               100%
-✅ Cache Redis:             100%
-✅ Testes Validados:        100%
+Backend GraphQL:     ████████████████████ 100%
+WebSocket:           ████████████████████ 100%
+Frontend UI:         ████████████████████ 100%
+Gamificação:         ████████████████████ 100%
+Cursos:              ████████████████████ 100%
+Chat:                ████████████████████ 100%
+Calendário:          ████████████████████ 100%
+Projetos:            ████████████████████ 100%
+Políticas:           ████████████████████ 100%
+Cache Redis:         ████████████████████ 100%
+Segurança:           ████████████████████ 100%
+Documentação:        ████████████████████ 100%
 ```
 
 ---
 
-## 📞 Suporte
+## 🎯 Features Destacadas
 
-### Documentação
-- [COMECE_AQUI.md](COMECE_AQUI.md) - Início rápido
-- [MATERNAR_QUICKSTART.md](MATERNAR_QUICKSTART.md) - Guia completo
-- [INSTALACAO_MANUAL.md](INSTALACAO_MANUAL.md) - Setup manual
-- [CHECKLIST_TESTE.md](CHECKLIST_TESTE.md) - Testes
+### Cmd/Ctrl+K - Busca Global ⚡
+Busque qualquer coisa no sistema instantaneamente com atalho de teclado.
 
-### Comandos de Diagnóstico
-```bash
-bash testar-sistema.sh
-bash sms-control.sh status
-bash sms-control.sh logs
-```
+### Centro de Notificações 🔔
+Notificações em tempo real com contador de não lidas e ações rápidas.
+
+### Gráficos Interativos 📊
+4 gráficos em Analytics com tooltips e legendas interativas.
+
+### Página Admin Completa 👑
+6 tabs de gerenciamento: Overview, Usuários, Sistema, Segurança, Database, Configurações.
+
+### Validação Robusta ✅
+React Hook Form + Zod em todos os formulários com mensagens em português.
+
+---
+
+## 💰 Custos (Render)
+
+| Plano | Custo | Recursos |
+|-------|-------|----------|
+| Free | $0/mês | Hiberna após 15min inatividade |
+| Starter | $24/mês | Backend + PostgreSQL + Redis |
+| Professional | $70/mês | Mais recursos e performance |
 
 ---
 
@@ -426,56 +304,15 @@ Proprietário © 2025 Maternar Santa Mariense
 
 ---
 
-## 🎯 Próximo Passo
+## 🔗 Links
 
-### Opção A: Rodar Local (3 min)
-```bash
-cd /Users/kalleby/Downloads/SMS_SM
-bash sms-control.sh start
-# Acesse: http://localhost:3000
-# Login: admin@maternarsm.com.br / admin123
-```
-
-### Opção B: Deploy no Render (10 min) ⚡
-```bash
-# Push para GitHub
-git push origin main
-
-# Render Dashboard
-# https://dashboard.render.com
-# New + → Blueprint → Deploy!
-```
-
-### Opção C: Ver Tudo Implementado
-📄 Leia: `🎉_SISTEMA_COMPLETO_FINAL.md` (visão completa)  
-📄 Ou: `⚡_RESUMO_1_PAGINA.md` (2 minutos)  
-📄 Ou: `🚀_PROXIMOS_PASSOS.md` (guia do que fazer agora)
+- **Render**: https://render.com
+- **Deploy**: Use `render.yaml` para deploy automático
+- **GraphQL Playground**: http://localhost:4000/graphql (dev only)
 
 ---
 
-## 🎉 NOVIDADES v2.0.0
+**🏥 Maternar Santa Mariense v2.0.0**  
+*Tecnologia a serviço da saúde* 💚
 
-**15 melhorias críticas adicionadas hoje**:
-- ⚡ Busca global com **Cmd/Ctrl+K**
-- 🔔 Centro de notificações funcional
-- 🎨 Gráficos interativos em Analytics
-- 👑 Página Admin completa (6 tabs)
-- 📝 Modais de criação funcionais
-- 💾 Salvar configurações com feedback
-- 📄 Visualizador de PDF integrado
-- 📤 Upload de arquivos drag & drop
-- ✅ Validação robusta (Zod + React Hook Form)
-- 🔒 Sistema de permissões
-- 🔍 Filtros avançados
-- 📊 Páginas de detalhes (ProjectDetail)
-- ⏳ Skeleton screens
-- 🎊 E muito mais!
-
-**Detalhes**: `MELHORIAS_IMPLEMENTADAS.md` | **Testes**: `COMO_TESTAR_MELHORIAS.md`
-
----
-
-**🏥 Maternar Santa Mariense**  
-*Tecnologia a serviço da saúde*
-
-v2.0.0 | 27 de outubro de 2025 | **41 objetivos alcançados** ✅
+Desenvolvido com React, TypeScript, GraphQL e ❤️
