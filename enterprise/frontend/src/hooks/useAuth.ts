@@ -1,20 +1,31 @@
-import { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN, REGISTER, LOGOUT } from '../graphql/mutations'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from '../components/providers/ToastProvider'
+
+// Simple toast wrapper to avoid dependency issues
+let toastShow: any = null
+export const setToast = (show: any) => {
+  toastShow = show
+}
+
+const showToast = ({ type, title, message }: any) => {
+  if (toastShow) {
+    toastShow({ type, title, message })
+  } else {
+    console.log(`[${type.toUpperCase()}] ${title}: ${message}`)
+  }
+}
 
 export const useAuth = () => {
-  const [loading, setLoading] = useState(false)
-  const { showToast } = useToast()
   const navigate = useNavigate()
 
-  const [loginMutation] = useMutation(LOGIN)
-  const [registerMutation] = useMutation(REGISTER)
+  const [loginMutation, { loading: loginLoading }] = useMutation(LOGIN)
+  const [registerMutation, { loading: registerLoading }] = useMutation(REGISTER)
   const [logoutMutation] = useMutation(LOGOUT)
 
+  const loading = loginLoading || registerLoading
+
   const login = async (email: string, password: string) => {
-    setLoading(true)
     try {
       const { data } = await loginMutation({
         variables: {
@@ -42,13 +53,10 @@ export const useAuth = () => {
         message: error.message || 'Credenciais inválidas'
       })
       return { success: false, error: error.message }
-    } finally {
-      setLoading(false)
     }
   }
 
   const register = async (input: any) => {
-    setLoading(true)
     try {
       const { data } = await registerMutation({
         variables: { input }
@@ -74,8 +82,6 @@ export const useAuth = () => {
         message: error.message || 'Dados inválidos'
       })
       return { success: false, error: error.message }
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -97,4 +103,3 @@ export const useAuth = () => {
     loading
   }
 }
-

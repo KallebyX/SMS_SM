@@ -20,6 +20,14 @@ export const useProjects = () => {
     refetchQueries: [{ query: GET_PROJECTS }]
   })
 
+  const [updateTaskMutation] = useMutation(UPDATE_TASK, {
+    refetchQueries: [{ query: GET_PROJECTS }]
+  })
+
+  const [deleteTaskMutation] = useMutation(DELETE_TASK, {
+    refetchQueries: [{ query: GET_PROJECTS }]
+  })
+
   const projects = data?.projects || []
 
   const createProject = async (input: any) => {
