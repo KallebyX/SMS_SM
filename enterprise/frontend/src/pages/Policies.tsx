@@ -1,172 +1,90 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { 
+import {
   FileText,
   Search,
-  Filter,
-  Download,
-  Eye,
-  Edit,
-  Plus,
-  Clock,
-  Users,
-  Shield,
+  CheckCircle,
   AlertCircle,
-  CheckCircle
+  Clock,
+  Eye,
+  BookOpen,
+  Loader2
 } from 'lucide-react'
 
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
-import { Avatar } from '../components/ui/Avatar'
-import { PDFViewer } from '../components/PDFViewer'
-import { useToast } from '../components/ui/Toast'
+import { LoadingSpinner } from '../components/ui/LoadingSpinner'
+import { usePolicies } from '../hooks/usePolicies'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 const Policies: React.FC = () => {
-  const { showToast } = useToast()
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedPolicy, setSelectedPolicy] = useState<any>(null)
-  const [showPDFViewer, setShowPDFViewer] = useState(false)
+  const { policies, loading, markAsRead, acknowledge } = usePolicies()
 
-  const categories = [
-    { id: 'all', name: 'Todas', count: 24 },
-    { id: 'safety', name: 'Segurança', count: 8 },
-    { id: 'compliance', name: 'Compliance', count: 6 },
-    { id: 'clinical', name: 'Clínicas', count: 7 },
-    { id: 'administrative', name: 'Administrativas', count: 3 }
-  ]
+  // Extrair categorias únicas
+  const categories = useMemo(() => {
+    const categoryCounts = policies.reduce((acc, policy) => {
+      acc[policy.category] = (acc[policy.category] || 0) + 1
+      return acc
+    }, {} as Record<string, number>)
 
-  const policies = [
-    {
-      id: 1,
-      title: 'Protocolo de Segurança do Paciente',
-      description: 'Diretrizes completas para garantir a segurança do paciente em todos os procedimentos',
-      category: 'safety',
-      version: '2.1',
-      status: 'active',
-      lastUpdated: '2025-09-15',
-      author: 'Dr. Maria Silva',
-      approver: 'Diretoria Médica',
-      effectiveDate: '2025-10-01',
-      nextReview: '2026-10-01',
-      priority: 'high',
-      downloads: 234,
-      views: 1567,
-      tags: ['ANVISA', 'Segurança', 'Protocolo']
-    },
-    {
-      id: 2,
-      title: 'Política de Controle de Infecção',
-      description: 'Medidas preventivas e protocolos para controle de infecção hospitalar',
-      category: 'safety',
-      version: '3.0',
-      status: 'active',
-      lastUpdated: '2025-08-20',
-      author: 'Ana Costa',
-      approver: 'Comitê de Infecção',
-      effectiveDate: '2025-09-01',
-      nextReview: '2026-09-01',
-      priority: 'high',
-      downloads: 456,
-      views: 2134,
-      tags: ['Infecção', 'Prevenção', 'Higiene']
-    },
-    {
-      id: 3,
-      title: 'Regulamento LGPD - Dados de Pacientes',
-      description: 'Diretrizes para tratamento e proteção de dados pessoais conforme LGPD',
-      category: 'compliance',
-      version: '1.5',
-      status: 'review',
-      lastUpdated: '2025-09-30',
-      author: 'João Santos',
-      approver: 'Jurídico',
-      effectiveDate: '2025-11-01',
-      nextReview: '2026-11-01',
-      priority: 'medium',
-      downloads: 123,
-      views: 789,
-      tags: ['LGPD', 'Privacidade', 'Dados']
-    },
-    {
-      id: 4,
-      title: 'Protocolo de Medicação Segura',
-      description: 'Procedimentos para prescrição, dispensação e administração segura de medicamentos',
-      category: 'clinical',
-      version: '4.2',
-      status: 'active',
-      lastUpdated: '2025-07-10',
-      author: 'Dr. Pedro Lima',
-      approver: 'Farmácia Clínica',
-      effectiveDate: '2025-08-01',
-      nextReview: '2026-08-01',
-      priority: 'high',
-      downloads: 678,
-      views: 3456,
-      tags: ['Medicação', 'Farmácia', 'Segurança']
-    },
-    {
-      id: 5,
-      title: 'Política de Recursos Humanos',
-      description: 'Diretrizes para gestão de pessoal e desenvolvimento profissional',
-      category: 'administrative',
-      version: '2.0',
-      status: 'draft',
-      lastUpdated: '2025-10-05',
-      author: 'Sofia Oliveira',
-      approver: 'RH',
-      effectiveDate: '2025-12-01',
-      nextReview: '2026-12-01',
-      priority: 'medium',
-      downloads: 45,
-      views: 234,
-      tags: ['RH', 'Pessoal', 'Desenvolvimento']
+    return [
+      { id: 'all', name: 'Todas', count: policies.length },
+      ...Object.entries(categoryCounts).map(([category, count]) => ({
+        id: category,
+        name: category,
+        count
+      }))
+    ]
+  }, [policies])
+
+  // Filtrar políticas
+  const filteredPolicies = useMemo(() => {
+    return policies.filter(policy => {
+      const matchesCategory = activeCategory === 'all' || policy.category === activeCategory
+      const matchesSearch = policy.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           policy.content?.toLowerCase().includes(searchTerm.toLowerCase())
+      return matchesCategory && matchesSearch && policy.isActive
+    })
+  }, [policies, activeCategory, searchTerm])
+
+  // Estatísticas
+  const stats = useMemo(() => {
+    const activePolicies = policies.filter(p => p.isActive)
+    const requireAck = activePolicies.filter(p => p.requiresAcknowledgment)
+    const read = policies.filter(p => p.readStatus?.readAt)
+    const acknowledged = policies.filter(p => p.readStatus?.acknowledged)
+
+    return {
+      total: activePolicies.length,
+      requireAcknowledgment: requireAck.length,
+      read: read.length,
+      acknowledged: acknowledged.length
     }
-  ]
+  }, [policies])
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'review': return 'bg-yellow-100 text-yellow-800'
-      case 'draft': return 'bg-blue-100 text-blue-800'
-      case 'archived': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-gray-100 text-gray-800'
+  const handleViewPolicy = (policy: any) => {
+    setSelectedPolicy(policy)
+    if (!policy.readStatus?.readAt) {
+      markAsRead(policy.id)
     }
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'active': return <CheckCircle className="w-4 h-4" />
-      case 'review': return <AlertCircle className="w-4 h-4" />
-      case 'draft': return <Edit className="w-4 h-4" />
-      case 'archived': return <FileText className="w-4 h-4" />
-      default: return <FileText className="w-4 h-4" />
-    }
+  const handleAcknowledge = async (policyId: string) => {
+    await acknowledge(policyId)
+    setSelectedPolicy(null)
   }
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'text-red-600'
-      case 'medium': return 'text-yellow-600'
-      case 'low': return 'text-green-600'
-      default: return 'text-gray-600'
-    }
-  }
-
-  const filteredPolicies = policies.filter(policy => {
-    const matchesCategory = activeCategory === 'all' || policy.category === activeCategory
-    const matchesSearch = policy.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         policy.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         policy.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-    return matchesCategory && matchesSearch
-  })
-
-  const stats = {
-    total: policies.length,
-    active: policies.filter(p => p.status === 'active').length,
-    review: policies.filter(p => p.status === 'review').length,
-    draft: policies.filter(p => p.status === 'draft').length
+  if (loading && policies.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
   }
 
   return (
@@ -182,16 +100,6 @@ const Policies: React.FC = () => {
             Acesse e gerencie todas as políticas organizacionais
           </p>
         </div>
-        <div className="flex space-x-3">
-          <Button variant="outline">
-            <Filter className="w-4 h-4 mr-2" />
-            Filtros Avançados
-          </Button>
-          <Button className="bg-maternar-blue-600">
-            <Plus className="w-4 h-4 mr-2" />
-            Nova Política
-          </Button>
-        </div>
       </motion.div>
 
       {/* Stats Overview */}
@@ -201,15 +109,13 @@ const Policies: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="p-6">
+          <Card className="p-6 bg-gradient-to-r from-maternar-blue-500 to-maternar-blue-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-blue-100">Total de Políticas</p>
+                <p className="text-2xl font-bold">{stats.total}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <FileText className="w-6 h-6 text-maternar-blue-600" />
-              </div>
+              <FileText className="w-8 h-8 text-blue-200" />
             </div>
           </Card>
         </motion.div>
@@ -219,15 +125,13 @@ const Policies: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="p-6">
+          <Card className="p-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Ativas</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.active}</p>
+                <p className="text-yellow-100">Requerem Confirmação</p>
+                <p className="text-2xl font-bold">{stats.requireAcknowledgment}</p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
+              <AlertCircle className="w-8 h-8 text-yellow-200" />
             </div>
           </Card>
         </motion.div>
@@ -237,15 +141,13 @@ const Policies: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="p-6">
+          <Card className="p-6 bg-gradient-to-r from-green-500 to-green-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Em Revisão</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.review}</p>
+                <p className="text-green-100">Lidas</p>
+                <p className="text-2xl font-bold">{stats.read}</p>
               </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                <AlertCircle className="w-6 h-6 text-yellow-600" />
-              </div>
+              <Eye className="w-8 h-8 text-green-200" />
             </div>
           </Card>
         </motion.div>
@@ -255,181 +157,227 @@ const Policies: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="p-6">
+          <Card className="p-6 bg-gradient-to-r from-maternar-pink-500 to-maternar-pink-600 text-white">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Rascunhos</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.draft}</p>
+                <p className="text-purple-100">Confirmadas</p>
+                <p className="text-2xl font-bold">{stats.acknowledged}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <Edit className="w-6 h-6 text-maternar-blue-600" />
-              </div>
+              <CheckCircle className="w-8 h-8 text-purple-200" />
             </div>
           </Card>
         </motion.div>
       </div>
 
-      {/* Search and Filters */}
-      <Card className="p-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-          <div className="relative flex-1 md:mr-4">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Buscar políticas, procedimentos ou tags..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          
-          <div className="flex space-x-2 overflow-x-auto">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  activeCategory === category.id
-                    ? 'bg-maternar-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {category.name} ({category.count})
-              </button>
-            ))}
-          </div>
-        </div>
-      </Card>
-
-      {/* Policies List */}
-      <div className="space-y-4">
-        {filteredPolicies.map((policy, index) => (
-          <motion.div
-            key={policy.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+      {/* Filters */}
+      <div className="flex space-x-2 overflow-x-auto pb-2">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            onClick={() => setActiveCategory(category.id)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+              activeCategory === category.id
+                ? 'bg-maternar-blue-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+            aria-pressed={activeCategory === category.id}
           >
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {policy.title}
-                    </h3>
-                    <Badge className={getStatusColor(policy.status)}>
-                      {getStatusIcon(policy.status)}
-                      <span className="ml-1 capitalize">{policy.status}</span>
-                    </Badge>
-                    <div className={`w-2 h-2 rounded-full ${getPriorityColor(policy.priority)}`} />
-                  </div>
-                  
-                  <p className="text-gray-600 mb-4">{policy.description}</p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="w-4 h-4 mr-2" />
-                      <span>Autor: {policy.author}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Shield className="w-4 h-4 mr-2" />
-                      <span>Aprovador: {policy.approver}</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="w-4 h-4 mr-2" />
-                      <span>Versão: {policy.version}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="text-xs text-gray-500">Última Atualização</p>
-                      <p className="text-sm font-medium text-gray-900">
-                        {new Date(policy.lastUpdated).toLocaleDateString('pt-BR')}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Vigência</p>
-                      <p className="text-sm font-medium text-gray-900">
-                        {new Date(policy.effectiveDate).toLocaleDateString('pt-BR')}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">Próxima Revisão</p>
-                      <p className="text-sm font-medium text-gray-900">
-                        {new Date(policy.nextReview).toLocaleDateString('pt-BR')}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-4 mb-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Download className="w-4 h-4 mr-1" />
-                      <span>{policy.downloads} downloads</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Eye className="w-4 h-4 mr-1" />
-                      <span>{policy.views} visualizações</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {policy.tags.map((tag, tagIndex) => (
-                      <Badge key={tagIndex} className="bg-gray-100 text-gray-700 text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex flex-col space-y-2 ml-6">
-                  <Button 
-                    size="sm"
-                    onClick={() => {
-                      setSelectedPolicy(policy)
-                      setShowPDFViewer(true)
-                    }}
-                  >
-                    <Eye className="w-4 h-4 mr-1" />
-                    Visualizar
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => {
-                      showToast({
-                        type: 'success',
-                        title: 'Download iniciado',
-                        message: `Baixando ${policy.title}...`
-                      })
-                      // TODO: Implement actual PDF download
-                    }}
-                  >
-                    <Download className="w-4 h-4 mr-1" />
-                    Download
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    <Edit className="w-4 h-4 mr-1" />
-                    Editar
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+            {category.name} ({category.count})
+          </button>
         ))}
       </div>
 
-      {/* PDF Viewer Modal */}
-      {selectedPolicy && (
-        <PDFViewer
-          isOpen={showPDFViewer}
-          onClose={() => {
-            setShowPDFViewer(false)
-            setSelectedPolicy(null)
-          }}
-          pdfUrl={`/policies/${selectedPolicy.id}.pdf`}
-          title={selectedPolicy.title}
-        />
+      {/* Search */}
+      <Card className="p-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Buscar políticas..."
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Buscar políticas"
+          />
+        </div>
+      </Card>
+
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-maternar-blue-600" />
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading && filteredPolicies.length === 0 && (
+        <Card className="p-12 text-center">
+          <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Nenhuma política encontrada
+          </h3>
+          <p className="text-gray-600">
+            {searchTerm
+              ? 'Tente ajustar sua busca ou filtros'
+              : 'Novas políticas serão adicionadas em breve'}
+          </p>
+        </Card>
+      )}
+
+      {/* Policies List */}
+      {!selectedPolicy ? (
+        <div className="space-y-4">
+          {filteredPolicies.map((policy, index) => {
+            const isRead = !!policy.readStatus?.readAt
+            const isAcknowledged = !!policy.readStatus?.acknowledged
+            const needsAcknowledgment = policy.requiresAcknowledgment && !isAcknowledged
+
+            return (
+              <motion.div
+                key={policy.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <Card className={`p-6 hover:shadow-lg transition-shadow ${needsAcknowledgment ? 'border-l-4 border-yellow-500' : ''}`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {policy.title}
+                        </h3>
+                        <Badge className="bg-blue-100 text-blue-800">
+                          v{policy.version}
+                        </Badge>
+                        {policy.category && (
+                          <Badge className="bg-gray-100 text-gray-800">
+                            {policy.category}
+                          </Badge>
+                        )}
+                        {isRead && (
+                          <Badge className="bg-green-100 text-green-800 flex items-center">
+                            <Eye className="w-3 h-3 mr-1" />
+                            Lida
+                          </Badge>
+                        )}
+                        {isAcknowledged && (
+                          <Badge className="bg-purple-100 text-purple-800 flex items-center">
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Confirmada
+                          </Badge>
+                        )}
+                        {needsAcknowledgment && (
+                          <Badge className="bg-yellow-100 text-yellow-800 flex items-center">
+                            <AlertCircle className="w-3 h-3 mr-1" />
+                            Confirmação Pendente
+                          </Badge>
+                        )}
+                      </div>
+
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                        {policy.content?.substring(0, 200)}...
+                      </p>
+
+                      <div className="flex items-center text-xs text-gray-500 space-x-4">
+                        <span className="flex items-center">
+                          <Clock className="w-3 h-3 mr-1" />
+                          Atualizada em {format(new Date(policy.updatedAt), 'dd/MM/yyyy', { locale: ptBR })}
+                        </span>
+                      </div>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      onClick={() => handleViewPolicy(policy)}
+                      className="ml-4"
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      {isRead ? 'Revisar' : 'Ler'}
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
+            )
+          })}
+        </div>
+      ) : (
+        /* Policy Detail View */
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <Card className="p-8">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {selectedPolicy.title}
+                </h2>
+                <div className="flex items-center space-x-3">
+                  <Badge className="bg-blue-100 text-blue-800">
+                    Versão {selectedPolicy.version}
+                  </Badge>
+                  <Badge className="bg-gray-100 text-gray-800">
+                    {selectedPolicy.category}
+                  </Badge>
+                  <span className="text-sm text-gray-500">
+                    Atualizada em {format(new Date(selectedPolicy.updatedAt), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                  </span>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => setSelectedPolicy(null)}
+              >
+                Voltar
+              </Button>
+            </div>
+
+            <div className="prose max-w-none mb-8">
+              <div className="whitespace-pre-wrap text-gray-700">
+                {selectedPolicy.content}
+              </div>
+            </div>
+
+            {selectedPolicy.requiresAcknowledgment && !selectedPolicy.readStatus?.acknowledged && (
+              <div className="border-t border-gray-200 pt-6">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                  <div className="flex items-start">
+                    <AlertCircle className="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-yellow-900 mb-2">
+                        Confirmação de Leitura Obrigatória
+                      </h3>
+                      <p className="text-sm text-yellow-800 mb-4">
+                        Esta política requer sua confirmação de que você leu e compreendeu todo o conteúdo.
+                        Ao confirmar, você está declarando ciência das normas e diretrizes aqui estabelecidas.
+                      </p>
+                      <Button
+                        onClick={() => handleAcknowledge(selectedPolicy.id)}
+                        className="bg-yellow-600 hover:bg-yellow-700"
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Confirmar Leitura
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selectedPolicy.readStatus?.acknowledged && (
+              <div className="border-t border-gray-200 pt-6">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center">
+                  <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
+                  <div>
+                    <p className="text-sm font-medium text-green-900">
+                      Você confirmou esta política em {format(new Date(selectedPolicy.readStatus.readAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Card>
+        </motion.div>
       )}
     </div>
   )
