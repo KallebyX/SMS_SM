@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { logger } from '../utils/logger.js'
+import { streakService } from './streak.service.js'
 
 export interface CreateCourseData {
   title: string
@@ -242,9 +243,12 @@ export class CourseService {
       
       // Update course progress
       await this.updateCourseProgress(userId, lesson.course.id)
-      
+
+      // Update user streak
+      await streakService.updateUserStreak(userId)
+
       logger.info(`User ${userId} completed lesson ${lessonId} and earned ${lesson.xpReward} XP`)
-      
+
       return {
         completion,
         xpEarned: lesson.xpReward

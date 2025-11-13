@@ -13,6 +13,7 @@ import ForgotPassword from './pages/auth/ForgotPassword'
 import Dashboard from './pages/Dashboard'
 import Gamification from './pages/Gamification'
 import Training from './pages/Training'
+import CourseDetail from './pages/CourseDetail'
 import Chat from './pages/Chat'
 import Calendar from './pages/Calendar'
 import Projects from './pages/Projects'
@@ -52,6 +53,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/gamification" element={<Gamification />} />
               <Route path="/training" element={<Training />} />
+              <Route path="/training/:id" element={<CourseDetail />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/projects" element={<Projects />} />

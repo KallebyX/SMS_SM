@@ -18,6 +18,8 @@ export const ME = gql`
       totalXP
       level
       weeklyXP
+      currentStreak
+      longestStreak
       lastActive
       isOnline
       createdAt
