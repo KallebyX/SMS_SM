@@ -50,8 +50,8 @@ const Training: React.FC = () => {
   // Contar certificados (cursos 100% completos)
   const certificatesCount = completedCoursesCount
 
-  // Calcular sequência (simulado - idealmente viria do backend)
-  const currentStreak = 7 // TODO: implementar lógica real de streak no backend
+  // Obter streak do usuário
+  const currentStreak = user?.currentStreak || 0
 
   const stats = {
     coursesCompleted: completedCoursesCount,

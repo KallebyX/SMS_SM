@@ -26,7 +26,10 @@ model User {
   totalXP       Int      @default(0)
   level         Int      @default(1)
   weeklyXP      Int      @default(0)
-  
+  currentStreak Int      @default(0)
+  longestStreak Int      @default(0)
+  lastStreakDate DateTime?
+
   // Activity tracking
   lastActive    DateTime @default(now())
   isOnline      Boolean  @default(false)
