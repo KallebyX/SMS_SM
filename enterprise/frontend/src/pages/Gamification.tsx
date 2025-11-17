@@ -1,25 +1,28 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { 
-  Trophy, 
-  Target, 
-  Award, 
-  Star, 
-  TrendingUp, 
+import {
+  Trophy,
+  Target,
+  Award,
+  Star,
+  TrendingUp,
   Gift,
   Users,
   Calendar,
   CheckCircle,
   Medal,
   Crown,
-  Zap
+  Zap,
+  Flame,
+  Sparkles
 } from 'lucide-react'
 
-import { Card } from '../components/ui/Card'
+import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Progress } from '../components/ui/Progress'
 import { Badge } from '../components/ui/Badge'
 import { Avatar } from '../components/ui/Avatar'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs'
 
 const Gamification: React.FC = () => {
   const userStats = {
@@ -73,6 +76,26 @@ const Gamification: React.FC = () => {
       progress: 3,
       total: 5,
       rarity: 'rare'
+    },
+    {
+      id: 5,
+      title: 'Legendary Healer',
+      description: 'Complete 100 health assessments',
+      icon: <Crown className="w-6 h-6" />,
+      points: 5000,
+      completed: false,
+      progress: 45,
+      total: 100,
+      rarity: 'legendary'
+    },
+    {
+      id: 6,
+      title: 'Speed Runner',
+      description: 'Complete a course in under 1 hour',
+      icon: <Zap className="w-6 h-6" />,
+      points: 300,
+      completed: true,
+      rarity: 'rare'
     }
   ]
 
@@ -81,7 +104,9 @@ const Gamification: React.FC = () => {
     { rank: 2, name: 'João Santos', points: 48920, avatar: '/avatars/joao.jpg', level: 17 },
     { rank: 3, name: 'Ana Costa', points: 45230, avatar: '/avatars/ana.jpg', level: 15, isCurrentUser: true },
     { rank: 4, name: 'Pedro Lima', points: 43180, avatar: '/avatars/pedro.jpg', level: 15 },
-    { rank: 5, name: 'Sofia Oliveira', points: 41560, avatar: '/avatars/sofia.jpg', level: 14 }
+    { rank: 5, name: 'Sofia Oliveira', points: 41560, avatar: '/avatars/sofia.jpg', level: 14 },
+    { rank: 6, name: 'Carlos Mendes', points: 40120, avatar: '/avatars/carlos.jpg', level: 14 },
+    { rank: 7, name: 'Juliana Rocha', points: 38900, avatar: '/avatars/juliana.jpg', level: 13 }
   ]
 
   const challenges = [
@@ -119,191 +144,244 @@ const Gamification: React.FC = () => {
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'text-gray-600 bg-gray-100'
-      case 'rare': return 'text-blue-600 bg-blue-100'
-      case 'epic': return 'text-maternar-pink-600 bg-purple-100'
-      case 'legendary': return 'text-yellow-600 bg-yellow-100'
-      default: return 'text-gray-600 bg-gray-100'
+      case 'common': return 'secondary'
+      case 'rare': return 'info'
+      case 'epic': return 'warning'
+      case 'legendary': return 'success'
+      default: return 'default'
     }
   }
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy': return 'text-green-600 bg-green-100'
-      case 'medium': return 'text-yellow-600 bg-yellow-100'
-      case 'hard': return 'text-red-600 bg-red-100'
-      default: return 'text-gray-600 bg-gray-100'
+      case 'easy': return 'success'
+      case 'medium': return 'warning'
+      case 'hard': return 'danger'
+      default: return 'default'
     }
   }
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }
+
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
+      {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="mb-8"
       >
-        <div>
-          <h1 className="text-3xl font-bold text-maternar-blue-700">Gamificação</h1>
-          <p className="text-maternar-gray-600 mt-1">
-            Acompanhe seu progresso e conquiste recompensas
-          </p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
+              <Trophy className="h-8 w-8 text-primary" />
+              Gamificação
+            </h1>
+            <p className="text-muted-foreground">
+              Acompanhe seu progresso e conquiste recompensas
+            </p>
+          </div>
+
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-4 p-4 bg-gradient-to-r from-primary to-secondary rounded-xl shadow-lg"
+          >
+            <div className="text-right">
+              <p className="text-sm text-primary-foreground/80">Nível {userStats.level}</p>
+              <p className="text-2xl font-bold text-primary-foreground">
+                {userStats.totalPoints.toLocaleString()} pts
+              </p>
+            </div>
+            <div className="w-16 h-16 bg-primary-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <Crown className="w-8 h-8 text-primary-foreground" />
+            </div>
+          </motion.div>
         </div>
-        <motion.div 
-          className="flex items-center space-x-4"
-          whileHover={{ scale: 1.05 }}
-        >
-          <div className="text-right">
-            <p className="text-sm text-maternar-gray-600">Nível {userStats.level}</p>
-            <p className="text-2xl font-bold text-maternar-pink-600">{userStats.totalPoints.toLocaleString()} pts</p>
-          </div>
-          <div className="w-16 h-16 bg-gradient-to-br from-maternar-pink-500 to-maternar-pink-600 rounded-full flex items-center justify-center">
-            <Crown className="w-8 h-8 text-white" />
-          </div>
+      </motion.div>
+
+      {/* Stats Grid */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+      >
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Star className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  Nível {userStats.level}
+                </Badge>
+              </div>
+              <p className="text-white/80 text-sm mb-1">Experiência</p>
+              <p className="text-3xl font-bold mb-3">{userStats.xp} XP</p>
+              <Progress
+                value={(userStats.xp / userStats.nextLevelXp) * 100}
+                className="bg-blue-400/30"
+                variant="default"
+              />
+              <p className="text-xs text-white/60 mt-2">
+                {userStats.nextLevelXp - userStats.xp} XP para próximo nível
+              </p>
+            </div>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Flame className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  {userStats.streak > 7 ? 'On Fire!' : 'Ativo'}
+                </Badge>
+              </div>
+              <p className="text-white/80 text-sm mb-1">Sequência</p>
+              <p className="text-3xl font-bold">{userStats.streak} dias</p>
+              <p className="text-sm text-white/70 mt-2">
+                Continue assim! 🔥
+              </p>
+            </div>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Medal className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  Top {userStats.rank}
+                </Badge>
+              </div>
+              <p className="text-white/80 text-sm mb-1">Ranking</p>
+              <p className="text-3xl font-bold">#{userStats.rank}</p>
+              <p className="text-sm text-white/70 mt-2">
+                No ranking global
+              </p>
+            </div>
+          </Card>
+        </motion.div>
+
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Award className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  {userStats.badges}
+                </Badge>
+              </div>
+              <p className="text-white/80 text-sm mb-1">Conquistas</p>
+              <p className="text-3xl font-bold">{userStats.badges}</p>
+              <p className="text-sm text-white/70 mt-2">
+                Emblemas desbloqueados
+              </p>
+            </div>
+          </Card>
         </motion.div>
       </motion.div>
 
-      {/* User Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-maternar-blue-500 to-maternar-blue-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-maternar-blue-100">Experiência</p>
-                <p className="text-2xl font-bold">{userStats.xp} XP</p>
-                <Progress 
-                  value={(userStats.xp / userStats.nextLevelXp) * 100} 
-                  className="mt-2 bg-maternar-blue-400"
-                />
-              </div>
-              <Star className="w-8 h-8 text-maternar-blue-200" />
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-maternar-green-500 to-maternar-green-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-maternar-green-100">Sequência</p>
-                <p className="text-2xl font-bold">{userStats.streak} dias</p>
-              </div>
-              <Zap className="w-8 h-8 text-maternar-green-200" />
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-maternar-pink-500 to-maternar-pink-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-maternar-pink-100">Ranking</p>
-                <p className="text-2xl font-bold">#{userStats.rank}</p>
-              </div>
-              <Medal className="w-8 h-8 text-maternar-pink-200" />
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-maternar-green-500 to-maternar-green-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-maternar-green-100">Conquistas</p>
-                <p className="text-2xl font-bold">{userStats.badges}</p>
-              </div>
-              <Award className="w-8 h-8 text-maternar-green-200" />
-            </div>
-          </Card>
-        </motion.div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Achievements */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.3 }}
           className="lg:col-span-2"
         >
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold flex items-center">
-                <Trophy className="w-5 h-5 mr-2 text-yellow-600" />
-                Conquistas
-              </h2>
-              <Button variant="outline" size="sm">
-                Ver Todas
-              </Button>
-            </div>
-            <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-yellow-600 dark:text-yellow-500" />
+                  Conquistas
+                </h2>
+                <Button variant="outline" size="sm">
+                  Ver Todas
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
               {achievements.map((achievement) => (
                 <motion.div
                   key={achievement.id}
-                  whileHover={{ scale: 1.02 }}
-                  className={`p-4 rounded-lg border-2 ${
-                    achievement.completed 
-                      ? 'border-green-200 bg-green-50' 
-                      : 'border-gray-200 bg-gray-50'
-                  }`}
+                  whileHover={{ scale: 1.02, x: 4 }}
+                  className={`
+                    p-4 rounded-lg border-2 transition-all duration-200
+                    ${achievement.completed
+                      ? 'border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-900/20'
+                      : 'border-border bg-muted/30 hover:bg-muted/50'
+                    }
+                  `}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-3">
-                      <div className={`p-2 rounded-lg ${
-                        achievement.completed 
-                          ? 'bg-green-500 text-white' 
-                          : 'bg-gray-300 text-gray-600'
-                      }`}>
-                        {achievement.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">
+                  <div className="flex items-start gap-3">
+                    <div className={`
+                      p-2 rounded-lg shrink-0
+                      ${achievement.completed
+                        ? 'bg-green-500 text-white'
+                        : 'bg-muted text-muted-foreground'
+                      }
+                    `}>
+                      {achievement.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className="font-semibold text-foreground">
                           {achievement.title}
                         </h3>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {achievement.description}
-                        </p>
-                        {!achievement.completed && achievement.progress && (
-                          <div className="mt-2">
-                            <Progress 
-                              value={(achievement.progress / achievement.total) * 100}
-                              className="h-2"
-                            />
-                            <p className="text-xs text-gray-500 mt-1">
-                              {achievement.progress}/{achievement.total}
+                        <div className="flex items-center gap-2 shrink-0">
+                          <Badge variant={getRarityColor(achievement.rarity) as any} size="sm">
+                            {achievement.rarity}
+                          </Badge>
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {achievement.description}
+                      </p>
+                      {!achievement.completed && achievement.progress && (
+                        <div className="space-y-1">
+                          <Progress
+                            value={(achievement.progress / achievement.total) * 100}
+                            variant="success"
+                            size="sm"
+                          />
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs text-muted-foreground">
+                              {achievement.progress}/{achievement.total} concluído
+                            </p>
+                            <p className="text-xs font-medium text-green-600 dark:text-green-400">
+                              +{achievement.points} pts
                             </p>
                           </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end space-y-2">
-                      <Badge className={getRarityColor(achievement.rarity)}>
-                        {achievement.rarity}
-                      </Badge>
-                      <span className="text-sm font-medium text-gray-900">
-                        +{achievement.points} pts
-                      </span>
+                        </div>
+                      )}
+                      {achievement.completed && (
+                        <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                          ✓ Concluído (+{achievement.points} pts)
+                        </p>
+                      )}
                     </div>
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </CardContent>
           </Card>
         </motion.div>
 
@@ -311,52 +389,67 @@ const Gamification: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.4 }}
         >
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-6 flex items-center">
-              <TrendingUp className="w-5 h-5 mr-2 text-green-600" />
-              Ranking
-            </h2>
-            <div className="space-y-3">
+          <Card>
+            <CardHeader>
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-500" />
+                Ranking
+              </h2>
+            </CardHeader>
+            <CardContent className="space-y-2">
               {leaderboard.map((user) => (
                 <motion.div
                   key={user.rank}
                   whileHover={{ scale: 1.02 }}
-                  className={`flex items-center space-x-3 p-3 rounded-lg ${
-                    user.isCurrentUser 
-                      ? 'bg-maternar-blue-50 border-2 border-maternar-blue-200' 
-                      : 'hover:bg-gray-50'
-                  }`}
+                  className={`
+                    flex items-center gap-3 p-3 rounded-lg transition-all
+                    ${user.isCurrentUser
+                      ? 'bg-primary/10 border-2 border-primary/30 shadow-sm'
+                      : 'hover:bg-accent'
+                    }
+                  `}
                 >
-                  <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                    user.rank === 1 ? 'bg-yellow-500 text-white' :
-                    user.rank === 2 ? 'bg-gray-400 text-white' :
-                    user.rank === 3 ? 'bg-orange-500 text-white' :
-                    'bg-gray-200 text-gray-600'
-                  }`}>
+                  <div className={`
+                    flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold shrink-0
+                    ${user.rank === 1 ? 'bg-yellow-500 text-white' :
+                      user.rank === 2 ? 'bg-gray-400 text-white' :
+                      user.rank === 3 ? 'bg-orange-500 text-white' :
+                      'bg-muted text-muted-foreground'
+                    }
+                  `}>
                     {user.rank}
                   </div>
-                  <Avatar src={user.avatar} alt={user.name} size="sm" />
+                  <Avatar
+                    src={user.avatar}
+                    alt={user.name}
+                    fallback={user.name.charAt(0)}
+                    size="sm"
+                  />
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-medium truncate ${
-                      user.isCurrentUser ? 'text-maternar-blue-900' : 'text-gray-900'
-                    }`}>
+                    <p className={`
+                      text-sm font-medium truncate
+                      ${user.isCurrentUser ? 'text-primary' : 'text-foreground'}
+                    `}>
                       {user.name}
+                      {user.isCurrentUser && (
+                        <span className="ml-1 text-xs text-primary">(você)</span>
+                      )}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Nível {user.level}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
+                  <div className="text-right shrink-0">
+                    <p className="text-sm font-semibold text-foreground">
                       {user.points.toLocaleString()}
                     </p>
-                    <p className="text-xs text-gray-500">pts</p>
+                    <p className="text-xs text-muted-foreground">pts</p>
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </CardContent>
           </Card>
         </motion.div>
       </div>
@@ -365,60 +458,88 @@ const Gamification: React.FC = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
+        transition={{ delay: 0.5 }}
       >
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold flex items-center">
-              <Target className="w-5 h-5 mr-2 text-red-600" />
-              Desafios Ativos
-            </h2>
-            <Button variant="outline" size="sm">
-              <Gift className="w-4 h-4 mr-2" />
-              Explorar Mais
-            </Button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {challenges.map((challenge) => (
-              <motion.div
-                key={challenge.id}
-                whileHover={{ scale: 1.02 }}
-                className="p-4 border-2 border-gray-200 rounded-lg hover:border-maternar-blue-300 transition-colors"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <Badge className={getDifficultyColor(challenge.difficulty)}>
-                    {challenge.difficulty}
-                  </Badge>
-                  <span className="text-xs text-gray-500">
-                    até {new Date(challenge.deadline).toLocaleDateString('pt-BR')}
-                  </span>
-                </div>
-                <h3 className="font-medium text-gray-900 mb-2">
-                  {challenge.title}
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  {challenge.description}
-                </p>
-                <div className="mb-3">
-                  <Progress 
-                    value={(challenge.progress / challenge.total) * 100}
-                    className="h-2"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {challenge.progress}/{challenge.total} concluído
-                  </p>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-green-600">
-                    {challenge.reward}
-                  </span>
-                  <Button size="sm" disabled={challenge.progress === challenge.total}>
-                    {challenge.progress === challenge.total ? 'Concluído' : 'Participar'}
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Target className="w-5 h-5 text-red-600 dark:text-red-500" />
+                Desafios Ativos
+              </h2>
+              <Button variant="outline" size="sm" icon={<Gift className="w-4 h-4" />}>
+                Explorar Mais
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {challenges.map((challenge, index) => (
+                <motion.div
+                  key={challenge.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.6 + index * 0.1 }}
+                  whileHover={{ scale: 1.03, y: -4 }}
+                  className="group"
+                >
+                  <Card variant="bordered" className="h-full hover:border-primary/50 transition-all duration-200">
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <Badge variant={getDifficultyColor(challenge.difficulty) as any}>
+                          {challenge.difficulty}
+                        </Badge>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Calendar className="w-3 h-3" />
+                          {new Date(challenge.deadline).toLocaleDateString('pt-BR', {
+                            day: '2-digit',
+                            month: 'short'
+                          })}
+                        </div>
+                      </div>
+                      <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                        {challenge.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {challenge.description}
+                      </p>
+                      <div className="space-y-3">
+                        <div>
+                          <Progress
+                            value={(challenge.progress / challenge.total) * 100}
+                            variant={challenge.progress === challenge.total ? 'success' : 'default'}
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {challenge.progress}/{challenge.total} concluído
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between pt-3 border-t border-border">
+                          <div className="flex items-center gap-1 text-sm font-medium text-green-600 dark:text-green-400">
+                            <Sparkles className="w-4 h-4" />
+                            <span className="text-xs">{challenge.reward.split('+')[0].trim()}</span>
+                          </div>
+                          <Button
+                            size="sm"
+                            disabled={challenge.progress === challenge.total}
+                            variant={challenge.progress === challenge.total ? 'outline' : 'default'}
+                          >
+                            {challenge.progress === challenge.total ? (
+                              <>
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                Concluído
+                              </>
+                            ) : (
+                              'Participar'
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </CardContent>
         </Card>
       </motion.div>
     </div>
