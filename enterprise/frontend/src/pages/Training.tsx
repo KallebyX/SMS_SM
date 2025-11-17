@@ -11,13 +11,20 @@ import {
   CheckCircle,
   BarChart3,
   Target,
-  Loader2
+  Loader2,
+  GraduationCap,
+  TrendingUp,
+  Sparkles,
+  Play,
+  BookMarked
 } from 'lucide-react'
 
-import { Card } from '../components/ui/Card'
+import { Card, CardHeader, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Progress } from '../components/ui/Progress'
 import { Badge } from '../components/ui/Badge'
+import { Input } from '../components/ui/Input'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { useCourses } from '../hooks/useCourses'
 import { useAuth } from '../hooks/useAuth'
@@ -42,15 +49,11 @@ const Training: React.FC = () => {
       if (course.completedAt) {
         return acc + hours
       }
-      // Se não completou, conta proporcional ao progresso
       return acc + (hours * (course.progress / 100))
     }, 0)
   }, [myCourses])
 
-  // Contar certificados (cursos 100% completos)
   const certificatesCount = completedCoursesCount
-
-  // Obter streak do usuário
   const currentStreak = user?.currentStreak || 0
 
   const stats = {
@@ -81,7 +84,7 @@ const Training: React.FC = () => {
   const courseAchievements = useMemo(() => {
     return allAchievements.filter(a =>
       a.type === 'COURSE_COMPLETION' && !a.isUnlocked
-    ).slice(0, 3) // Mostrar apenas 3 conquistas pendentes
+    ).slice(0, 3)
   }, [allAchievements])
 
   // Filtrar cursos baseado no filtro ativo e busca
@@ -95,12 +98,12 @@ const Training: React.FC = () => {
   }, [courses, activeFilter, searchTerm])
 
   // Mapear dificuldade para cores
-  const getDifficultyColor = (difficulty: string) => {
+  const getDifficultyVariant = (difficulty: string) => {
     switch (difficulty) {
-      case 'BEGINNER': return 'bg-green-100 text-green-800'
-      case 'INTERMEDIATE': return 'bg-yellow-100 text-yellow-800'
-      case 'ADVANCED': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'BEGINNER': return 'success'
+      case 'INTERMEDIATE': return 'warning'
+      case 'ADVANCED': return 'danger'
+      default: return 'secondary'
     }
   }
 
@@ -123,7 +126,6 @@ const Training: React.FC = () => {
         console.error('Error enrolling:', error)
       }
     } else {
-      // Navegar para a página do curso (TODO: implementar rota de detalhes do curso)
       window.location.href = `/training/${courseId}`
     }
   }
@@ -147,163 +149,183 @@ const Training: React.FC = () => {
       category,
       ...data,
       percentage: Math.round((data.completed / data.total) * 100)
-    })).slice(0, 2) // Mostrar apenas 2 trilhas principais
+    })).slice(0, 3)
   }, [myCourses])
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }
 
   if (loading && courses.length === 0) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner size="lg" />
       </div>
     )
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
+      {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="mb-8"
       >
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Treinamentos</h1>
-          <p className="text-gray-600 mt-1">
-            Desenvolva suas habilidades com nossos cursos especializados
-          </p>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
+              <GraduationCap className="h-8 w-8 text-primary" />
+              Treinamentos
+            </h1>
+            <p className="text-muted-foreground">
+              Desenvolva suas habilidades com nossos cursos especializados
+            </p>
+          </div>
+          <Button variant="default" icon={<BookOpen className="w-4 h-4" />}>
+            Explorar Catálogo
+          </Button>
         </div>
-        <Button className="bg-gradient-to-r from-maternar-blue-600 to-maternar-pink-600">
-          <BookOpen className="w-4 h-4 mr-2" />
-          Explorar Catálogo
-        </Button>
       </motion.div>
 
-      {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-maternar-blue-500 to-maternar-blue-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-maternar-blue-100">Cursos Concluídos</p>
-                <p className="text-2xl font-bold">{stats.coursesCompleted}</p>
+      {/* Stats Grid */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+      >
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <CheckCircle className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  {stats.coursesCompleted > 0 ? 'Ativo' : 'Comece'}
+                </Badge>
               </div>
-              <CheckCircle className="w-8 h-8 text-blue-200" />
+              <p className="text-white/80 text-sm mb-1">Cursos Concluídos</p>
+              <p className="text-3xl font-bold">{stats.coursesCompleted}</p>
             </div>
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-green-500 to-green-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100">Horas de Estudo</p>
-                <p className="text-2xl font-bold">{stats.totalHours}h</p>
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Clock className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  Total
+                </Badge>
               </div>
-              <Clock className="w-8 h-8 text-green-200" />
+              <p className="text-white/80 text-sm mb-1">Horas de Estudo</p>
+              <p className="text-3xl font-bold">{stats.totalHours}h</p>
             </div>
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-maternar-pink-500 to-maternar-pink-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100">Certificados</p>
-                <p className="text-2xl font-bold">{stats.certificates}</p>
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Award className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  Earned
+                </Badge>
               </div>
-              <Award className="w-8 h-8 text-purple-200" />
+              <p className="text-white/80 text-sm mb-1">Certificados</p>
+              <p className="text-3xl font-bold">{stats.certificates}</p>
             </div>
           </Card>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Card className="p-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-100">Sequência</p>
-                <p className="text-2xl font-bold">{stats.currentStreak} dias</p>
+        <motion.div variants={item}>
+          <Card variant="elevated" className="overflow-hidden">
+            <div className="bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 p-6 text-white">
+              <div className="flex items-center justify-between mb-3">
+                <Target className="w-8 h-8 opacity-80" />
+                <Badge variant="outline" className="border-white/30 text-white">
+                  Dias
+                </Badge>
               </div>
-              <Target className="w-8 h-8 text-orange-200" />
+              <p className="text-white/80 text-sm mb-1">Sequência</p>
+              <p className="text-3xl font-bold">{stats.currentStreak}</p>
             </div>
           </Card>
         </motion.div>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-3 space-y-6">
           {/* Search and Filters */}
-          <Card className="p-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-              <div className="relative flex-1 md:mr-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex flex-col gap-4">
+                <Input
                   placeholder="Buscar cursos..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-maternar-blue-500 focus:border-transparent"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  aria-label="Buscar cursos"
+                  icon={<Search className="w-4 h-4" />}
+                  iconPosition="left"
+                  fullWidth
                 />
+                <Tabs value={activeFilter} onValueChange={setActiveFilter}>
+                  <TabsList className="w-full grid grid-cols-3 md:grid-cols-5 lg:flex">
+                    {categories.slice(0, 5).map((category) => (
+                      <TabsTrigger key={category.id} value={category.id}>
+                        {category.name} ({category.count})
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
               </div>
-              <div className="flex space-x-2 overflow-x-auto pb-2">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setActiveFilter(category.id)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                      activeFilter === category.id
-                        ? 'bg-maternar-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                    aria-pressed={activeFilter === category.id}
-                  >
-                    {category.name} ({category.count})
-                  </button>
-                ))}
-              </div>
-            </div>
+            </CardContent>
           </Card>
 
           {/* Loading State */}
           {loading && (
             <div className="flex justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-maternar-blue-600" />
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
             </div>
           )}
 
           {/* Empty State */}
           {!loading && filteredCourses.length === 0 && (
-            <Card className="p-12 text-center">
-              <BookOpen className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Nenhum curso encontrado
-              </h3>
-              <p className="text-gray-600">
-                {searchTerm
-                  ? 'Tente ajustar sua busca ou filtros'
-                  : 'Novos cursos serão adicionados em breve'}
-              </p>
+            <Card>
+              <CardContent className="p-12 text-center">
+                <BookOpen className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Nenhum curso encontrado
+                </h3>
+                <p className="text-muted-foreground">
+                  {searchTerm
+                    ? 'Tente ajustar sua busca ou filtros'
+                    : 'Novos cursos serão adicionados em breve'}
+                </p>
+              </CardContent>
             </Card>
           )}
 
           {/* Courses Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
             {filteredCourses.map((course, index) => {
               const enrollment = course.enrollment
               const isCompleted = enrollment?.completedAt
@@ -312,134 +334,159 @@ const Training: React.FC = () => {
               const totalLessons = course.totalLessons || course.lessons?.length || 0
 
               return (
-                <motion.div
-                  key={course.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
-                    <div className="aspect-w-16 aspect-h-9 bg-gray-200">
+                <motion.div key={course.id} variants={item}>
+                  <Card
+                    variant="bordered"
+                    className="overflow-hidden hover:border-primary/50 transition-all duration-200 h-full flex flex-col group"
+                    hover
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative aspect-video bg-muted">
                       <img
                         src={course.thumbnail || 'https://via.placeholder.com/800x450?text=Curso'}
                         alt={course.title}
-                        className="w-full h-32 object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x450?text=Curso'
                         }}
                       />
+                      {isCompleted && (
+                        <div className="absolute top-3 right-3 p-2 bg-green-500 rounded-full shadow-lg">
+                          <CheckCircle className="w-5 h-5 text-white" />
+                        </div>
+                      )}
+                      {progress > 0 && !isCompleted && (
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-muted/50">
+                          <div
+                            className="h-full bg-primary transition-all duration-300"
+                            style={{ width: `${progress}%` }}
+                          />
+                        </div>
+                      )}
                     </div>
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-start justify-between mb-2">
-                        <Badge className={getDifficultyColor(course.difficulty)}>
+
+                    <CardContent className="p-6 flex-1 flex flex-col">
+                      {/* Header */}
+                      <div className="flex items-start justify-between mb-3">
+                        <Badge variant={getDifficultyVariant(course.difficulty) as any} size="sm">
                           {translateDifficulty(course.difficulty)}
                         </Badge>
-                        {isCompleted && (
-                          <CheckCircle className="w-5 h-5 text-green-500" aria-label="Curso concluído" />
-                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {course.category}
+                        </span>
                       </div>
 
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      {/* Title */}
+                      <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                         {course.title}
                       </h3>
 
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-1">
+                      {/* Description */}
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">
                         {course.description}
                       </p>
 
-                      <div className="flex items-center text-sm text-gray-500 mb-4 flex-wrap gap-4">
-                        <span className="flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
-                          {course.estimatedTime}
-                        </span>
-                        <span className="flex items-center">
-                          <Users className="w-4 h-4 mr-1" />
-                          {course.totalEnrollments || 0}
-                        </span>
-                        <span className="flex items-center">
-                          <Award className="w-4 h-4 mr-1 text-yellow-400" />
-                          {course.xpReward} XP
-                        </span>
+                      {/* Meta Info */}
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>{course.estimatedTime}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          <span>{course.totalEnrollments || 0}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Sparkles className="w-4 h-4 text-amber-500" />
+                          <span className="font-medium">{course.xpReward} XP</span>
+                        </div>
                       </div>
 
+                      {/* Progress */}
                       {progress > 0 && (
-                        <div className="mb-4">
-                          <div className="flex justify-between text-sm text-gray-600 mb-1">
-                            <span>Progresso</span>
-                            <span>{completedLessons}/{totalLessons} aulas</span>
+                        <div className="mb-4 space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Progresso</span>
+                            <span className="font-medium text-foreground">
+                              {completedLessons}/{totalLessons} aulas
+                            </span>
                           </div>
-                          <Progress value={progress} className="h-2" />
+                          <Progress
+                            value={progress}
+                            variant={isCompleted ? 'success' : 'default'}
+                            size="sm"
+                          />
                         </div>
                       )}
 
-                      <div className="flex items-center justify-between mt-auto">
-                        <span className="text-sm text-gray-600">
-                          {course.category}
-                        </span>
-                        <Button
-                          size="sm"
-                          variant={progress > 0 && !isCompleted ? 'primary' : 'outline'}
-                          onClick={() => handleCourseAction(course.id, !!enrollment)}
-                          disabled={loading}
-                        >
-                          {isCompleted ? 'Revisar' : progress > 0 ? 'Continuar' : 'Iniciar'}
-                          <ChevronRight className="w-4 h-4 ml-1" />
-                        </Button>
-                      </div>
-                    </div>
+                      {/* Action Button */}
+                      <Button
+                        fullWidth
+                        variant={isCompleted ? 'outline' : progress > 0 ? 'default' : 'secondary'}
+                        onClick={() => handleCourseAction(course.id, !!enrollment)}
+                        disabled={loading}
+                        icon={
+                          isCompleted ? <BookMarked className="w-4 h-4" /> :
+                          progress > 0 ? <Play className="w-4 h-4" /> :
+                          <ChevronRight className="w-4 h-4" />
+                        }
+                        iconPosition="right"
+                      >
+                        {isCompleted ? 'Revisar' : progress > 0 ? 'Continuar' : 'Iniciar Curso'}
+                      </Button>
+                    </CardContent>
                   </Card>
                 </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Learning Path */}
+          {/* Learning Paths */}
           {learningPaths.length > 0 && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.3 }}
             >
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <BarChart3 className="w-5 h-5 mr-2 text-maternar-blue-600" />
-                  Trilha de Aprendizado
-                </h3>
-                <div className="space-y-3">
+              <Card>
+                <CardHeader>
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-primary" />
+                    Trilhas de Aprendizado
+                  </h3>
+                </CardHeader>
+                <CardContent className="space-y-3">
                   {learningPaths.map((path, index) => (
                     <div
                       key={path.category}
-                      className={`flex items-center justify-between p-3 rounded-lg ${
-                        index === 0 ? 'bg-blue-50' : 'bg-gray-50'
+                      className={`p-4 rounded-lg border-2 transition-all ${
+                        index === 0
+                          ? 'border-primary/30 bg-primary/5'
+                          : 'border-border bg-muted/30'
                       }`}
                     >
-                      <div>
-                        <p className={`text-sm font-medium ${
-                          index === 0 ? 'text-maternar-blue-900' : 'text-gray-900'
-                        }`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-semibold text-foreground">
                           {path.category}
                         </p>
-                        <p className={`text-xs ${
-                          index === 0 ? 'text-maternar-blue-600' : 'text-gray-600'
-                        }`}>
-                          {path.completed}/{path.total} cursos
-                        </p>
-                      </div>
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        index === 0 ? 'bg-maternar-blue-100' : 'bg-gray-100'
-                      }`}>
-                        <span className={`text-sm font-bold ${
-                          index === 0 ? 'text-maternar-blue-600' : 'text-gray-600'
-                        }`}>
+                        <Badge variant={index === 0 ? 'default' : 'secondary'} size="sm">
                           {path.percentage}%
-                        </span>
+                        </Badge>
                       </div>
+                      <Progress
+                        value={path.percentage}
+                        variant={path.percentage === 100 ? 'success' : 'default'}
+                        size="sm"
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {path.completed}/{path.total} cursos concluídos
+                      </p>
                     </div>
                   ))}
-                </div>
+                </CardContent>
               </Card>
             </motion.div>
           )}
@@ -449,16 +496,17 @@ const Training: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 0.4 }}
             >
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                  <Award className="w-5 h-5 mr-2 text-yellow-600" />
-                  Conquistas Pendentes
-                </h3>
-                <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                    <Award className="w-5 h-5 text-yellow-600 dark:text-yellow-500" />
+                    Conquistas Pendentes
+                  </h3>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   {courseAchievements.map((achievement) => {
-                    // Parse da condição para calcular progresso
                     const condition = JSON.parse(achievement.condition || '{}')
                     const currentProgress = condition.type === 'course_completion'
                       ? completedCoursesCount
@@ -467,32 +515,67 @@ const Training: React.FC = () => {
                     const progressPercent = Math.min((currentProgress / totalRequired) * 100, 100)
 
                     return (
-                      <div key={achievement.id} className="flex items-start space-x-3">
-                        <div className="text-2xl">{achievement.icon}</div>
-                        <div className="flex-1">
-                          <h4 className="text-sm font-medium text-gray-900">
+                      <div key={achievement.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+                        <div className="text-2xl shrink-0">{achievement.icon}</div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-semibold text-foreground mb-1">
                             {achievement.title}
                           </h4>
-                          <p className="text-xs text-gray-600 mb-2">
+                          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
                             {achievement.description}
                           </p>
-                          <div>
-                            <Progress
-                              value={progressPercent}
-                              className="h-1 mb-1"
-                            />
-                            <p className="text-xs text-gray-500">
-                              {currentProgress}/{totalRequired}
-                            </p>
-                          </div>
+                          <Progress
+                            value={progressPercent}
+                            variant="success"
+                            size="sm"
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {currentProgress}/{totalRequired}
+                          </p>
                         </div>
                       </div>
                     )
                   })}
-                </div>
+                </CardContent>
               </Card>
             </motion.div>
           )}
+
+          {/* Quick Stats */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <Card>
+              <CardHeader>
+                <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-500" />
+                  Resumo
+                </h3>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                  <span className="text-sm text-muted-foreground">Cursos Disponíveis</span>
+                  <span className="text-lg font-bold text-foreground">{courses.length}</span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                  <span className="text-sm text-muted-foreground">Em Progresso</span>
+                  <span className="text-lg font-bold text-foreground">
+                    {myCourses.filter(c => !c.completedAt && c.progress > 0).length}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10">
+                  <span className="text-sm font-medium text-primary">Taxa de Conclusão</span>
+                  <span className="text-lg font-bold text-primary">
+                    {myCourses.length > 0
+                      ? Math.round((completedCoursesCount / myCourses.length) * 100)
+                      : 0}%
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
     </div>
