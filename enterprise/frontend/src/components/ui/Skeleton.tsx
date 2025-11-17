@@ -47,7 +47,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 
   const skeletonElement = (
     <div
-      className={`animate-pulse bg-gray-200 ${getVariantClass()} ${className}`}
+      className={`shimmer bg-muted ${getVariantClass()} ${className}`}
       style={style}
     />
   )
@@ -68,8 +68,8 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 // Skeleton Card
 export const SkeletonCard: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
-    <div className={`bg-white rounded-lg shadow p-6 ${className}`}>
-      <div className="animate-pulse space-y-4">
+    <div className={`bg-card border border-border rounded-lg shadow-sm p-6 ${className}`}>
+      <div className="space-y-4">
         <div className="flex items-center space-x-4">
           <Skeleton variant="circular" width={48} height={48} />
           <div className="flex-1 space-y-2">
@@ -89,14 +89,14 @@ export const SkeletonCard: React.FC<{ className?: string }> = ({ className = '' 
 }
 
 // Skeleton Table
-export const SkeletonTable: React.FC<{ rows?: number; columns?: number }> = ({ 
-  rows = 5, 
-  columns = 4 
+export const SkeletonTable: React.FC<{ rows?: number; columns?: number }> = ({
+  rows = 5,
+  columns = 4
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
+    <div className="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
       <table className="w-full">
-        <thead className="bg-gray-50">
+        <thead className="bg-muted">
           <tr>
             {Array.from({ length: columns }).map((_, index) => (
               <th key={index} className="px-6 py-3">
@@ -105,7 +105,7 @@ export const SkeletonTable: React.FC<{ rows?: number; columns?: number }> = ({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-border">
           {Array.from({ length: rows }).map((_, rowIndex) => (
             <tr key={rowIndex}>
               {Array.from({ length: columns }).map((_, colIndex) => (
@@ -126,7 +126,7 @@ export const SkeletonList: React.FC<{ items?: number }> = ({ items = 3 }) => {
   return (
     <div className="space-y-4">
       {Array.from({ length: items }).map((_, index) => (
-        <div key={index} className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow">
+        <div key={index} className="flex items-center space-x-4 p-4 bg-card border border-border rounded-lg shadow-sm">
           <Skeleton variant="circular" width={48} height={48} />
           <div className="flex-1 space-y-2">
             <Skeleton width="70%" height={16} />
