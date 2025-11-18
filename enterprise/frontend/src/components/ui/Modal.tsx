@@ -75,16 +75,17 @@ export const Modal: React.FC<ModalProps> = ({
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className={`${sizeClasses[size]} w-full bg-white rounded-lg shadow-xl`}
+                className={`${sizeClasses[size]} w-full bg-card text-card-foreground border border-border rounded-lg shadow-2xl`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+                <div className="flex items-center justify-between p-6 border-b border-border">
+                  <h2 className="text-xl font-semibold text-foreground">{title}</h2>
                   {showCloseButton && (
                     <button
                       onClick={onClose}
-                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                      className="text-muted-foreground hover:text-foreground transition-colors rounded-md p-1 hover:bg-accent"
+                      aria-label="Fechar modal"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -92,13 +93,13 @@ export const Modal: React.FC<ModalProps> = ({
                 </div>
 
                 {/* Body */}
-                <div className="p-6 max-h-[calc(100vh-300px)] overflow-y-auto">
+                <div className="p-6 max-h-[calc(100vh-300px)] overflow-y-auto scrollbar-thin">
                   {children}
                 </div>
 
                 {/* Footer */}
                 {footer && (
-                  <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
+                  <div className="flex items-center justify-end gap-3 p-6 border-t border-border bg-muted/20">
                     {footer}
                   </div>
                 )}
@@ -157,7 +158,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
         </>
       }
     >
-      <p className="text-gray-600">{message}</p>
+      <p className="text-muted-foreground">{message}</p>
     </Modal>
   )
 }

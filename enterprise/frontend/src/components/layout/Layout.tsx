@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { 
+import {
   Menu,
   X,
   Home,
@@ -18,7 +18,9 @@ import {
   Bell,
   Search,
   ChevronDown,
-  LogOut
+  LogOut,
+  Sun,
+  Moon
 } from 'lucide-react'
 
 import { Button } from '../ui/Button'
@@ -26,12 +28,14 @@ import { Avatar } from '../ui/Avatar'
 import { useAuth } from '../providers/AuthProvider'
 import { NotificationCenter } from '../NotificationCenter'
 import { GlobalSearch } from '../GlobalSearch'
+import { useTheme } from '../providers/ThemeProvider'
 
 export const Layout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const location = useLocation()
   const { user, logout } = useAuth()
+  const { theme, setTheme, isDark } = useTheme()
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -49,11 +53,11 @@ export const Layout: React.FC = () => {
   ]
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-100">
+    <div className="h-screen flex overflow-hidden bg-background">
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 flex z-40 md:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-card border-r border-border">
           <div className="absolute top-0 right-0 -mr-12 pt-2">
             <button
               className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maternar-blue-300"
@@ -69,7 +73,7 @@ export const Layout: React.FC = () => {
                 src="/logo.png"
                 alt="Maternar Santa Mariense"
               />
-              <span className="ml-2 text-lg font-bold text-maternar-blue-700">Maternar</span>
+              <span className="ml-2 text-lg font-bold text-primary">Maternar</span>
             </div>
             <nav className="mt-5 px-2 space-y-1">
               {navigation.map((item) => {
@@ -80,13 +84,13 @@ export const Layout: React.FC = () => {
                     to={item.href}
                     className={`${
                       current
-                        ? 'bg-blue-100 text-blue-900'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    } group flex items-center px-2 py-2 text-sm font-medium rounded-md`}
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                    } group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors`}
                   >
                     <item.icon
                       className={`${
-                        current ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'
+                        current ? 'text-primary' : 'text-muted-foreground group-hover:text-accent-foreground'
                       } mr-3 flex-shrink-0 h-5 w-5`}
                     />
                     {item.name}
@@ -101,7 +105,7 @@ export const Layout: React.FC = () => {
       {/* Static sidebar for desktop */}
       <div className="hidden md:flex md:flex-shrink-0">
         <div className="flex flex-col w-64">
-          <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
+          <div className="flex flex-col h-0 flex-1 border-r border-border bg-card">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <img
@@ -109,9 +113,9 @@ export const Layout: React.FC = () => {
                   src="/logo.png"
                   alt="Maternar Santa Mariense"
                 />
-                <span className="ml-2 text-lg font-bold text-maternar-blue-700">Maternar</span>
+                <span className="ml-2 text-lg font-bold text-primary">Maternar</span>
               </div>
-              <nav className="mt-5 flex-1 px-2 bg-white space-y-1">
+              <nav className="mt-5 flex-1 px-2 bg-card space-y-1">
                 {navigation.map((item) => {
                   const current = location.pathname === item.href
                   return (
@@ -120,13 +124,13 @@ export const Layout: React.FC = () => {
                       to={item.href}
                       className={`${
                         current
-                          ? 'bg-maternar-blue-100 text-maternar-blue-900'
-                          : 'text-gray-600 hover:bg-maternar-blue-50 hover:text-maternar-blue-900'
-                      } group flex items-center px-2 py-2 text-sm font-medium rounded-md`}
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                      } group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors`}
                     >
                       <item.icon
                         className={`${
-                          current ? 'text-maternar-blue-600' : 'text-gray-400 group-hover:text-maternar-blue-500'
+                          current ? 'text-primary' : 'text-muted-foreground group-hover:text-accent-foreground'
                         } mr-3 flex-shrink-0 h-5 w-5`}
                       />
                       {item.name}
@@ -141,9 +145,9 @@ export const Layout: React.FC = () => {
 
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         {/* Top header */}
-        <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+        <div className="relative z-10 flex-shrink-0 flex h-16 bg-card border-b border-border shadow-sm">
           <button
-            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-maternar-blue-500 md:hidden"
+            className="px-4 border-r border-border text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-inset focus:ring-ring md:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-6 w-6" />
@@ -153,6 +157,15 @@ export const Layout: React.FC = () => {
               <GlobalSearch />
             </div>
             <div className="ml-4 flex items-center md:ml-6 space-x-2">
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                aria-label="Toggle theme"
+              >
+                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </button>
+
               {/* Notifications */}
               <NotificationCenter />
 
@@ -160,7 +173,7 @@ export const Layout: React.FC = () => {
               <div className="ml-3 relative">
                 <div>
                   <button
-                    className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-maternar-blue-500"
+                    className="max-w-xs bg-card flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
                     <Avatar
@@ -169,30 +182,30 @@ export const Layout: React.FC = () => {
                       fallback={user?.name || 'U'}
                       size="sm"
                     />
-                    <span className="hidden md:block ml-3 text-gray-700 text-sm font-medium">
+                    <span className="hidden md:block ml-3 text-foreground text-sm font-medium">
                       {user?.name}
                     </span>
-                    <ChevronDown className="hidden md:block ml-2 h-4 w-4 text-gray-400" />
+                    <ChevronDown className="hidden md:block ml-2 h-4 w-4 text-muted-foreground" />
                   </button>
                 </div>
                 {userMenuOpen && (
-                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-popover border border-border focus:outline-none">
                     <Link
                       to="/profile"
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                     >
                       <User className="mr-3 h-4 w-4" />
                       Seu Perfil
                     </Link>
                     <Link
                       to="/settings"
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                     >
                       <Settings className="mr-3 h-4 w-4" />
                       Configurações
                     </Link>
                     <button
-                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center w-full px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                       onClick={() => {
                         logout()
                         setUserMenuOpen(false)
